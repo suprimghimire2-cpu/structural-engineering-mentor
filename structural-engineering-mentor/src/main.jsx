@@ -1,26 +1,474 @@
-import React, {useMemo, useState} from 'react';
-import {createRoot} from 'react-dom/client';
-import {Search, BookOpen, MessageCircle, Box, ChevronRight, Sparkles, ArrowRight, Menu, X} from 'lucide-react';
-import {knowledge, categories, findKnowledge} from './data/knowledge';
-import './styles.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./styles.css";
 
-function App(){
- const [query,setQuery]=useState(''); const [selected,setSelected]=useState(knowledge.find(k=>k.id==='beam')); const [category,setCategory]=useState('All'); const [mobile,setMobile]=useState(false); const [chat,setChat]=useState(''); const [messages,setMessages]=useState([]);
- const filtered=useMemo(()=>knowledge.filter(k=>(category==='All'||k.category===category)&&(!query||k.title.toLowerCase().includes(query.toLowerCase())||k.summary.toLowerCase().includes(query.toLowerCase()))),[query,category]);
- const choose=k=>{setSelected(k);setMessages([]);setMobile(false)};
- const ask=e=>{e.preventDefault(); if(!chat.trim())return; const q=chat.trim(); const hit=findKnowledge(q); setMessages(m=>[...m,{q,a:hit?`This question is closely related to ${hit.title}. ${hit.summary} ${hit.sections.physical}`:'I do not have a verified concept match yet. Try asking about a structural term such as bending moment, shear, stiffness, buckling, load path, diaphragm, beam, column, slab, shear wall, or foundation.'}]); setChat('')};
- return <div className="app">
-  <header className="top"><div className="brand"><div className="brandMark">S</div><div><div className="brandName">STRUCTURE<span>MENTOR</span></div><div className="brandSub">Structural Engineering Knowledge Platform · V0.1</div></div></div><button className="mobileBtn" onClick={()=>setMobile(!mobile)}>{mobile?<X/>:<Menu/>}</button><div className="topSearch"><Search size={18}/><input placeholder="Search any engineering concept..." value={query} onChange={e=>setQuery(e.target.value)}/></div></header>
-  <div className="layout">
-   <aside className={mobile?'sidebar open':'sidebar'}><div className="sideTitle">Explore</div><button className={category==='All'?'sideBtn active':'sideBtn'} onClick={()=>setCategory('All')}><BookOpen/>All knowledge</button>{categories.map(c=><button key={c} className={category===c?'sideBtn active':'sideBtn'} onClick={()=>setCategory(c)}><ChevronRight/>{c}</button>)}<div className="sideCard"><Sparkles size={18}/><b>Mentor mode</b><p>Ask why, how, what-if, or practical engineering questions.</p></div></aside>
-   <main className="main">
-    <section className="hero"><div><div className="eyebrow">ENGINEERING KNOWLEDGE ENGINE</div><h1>Understand structures.<br/><em>Think like an engineer.</em></h1><p>Explore structural concepts through definitions, mechanics, practical meaning, failure modes, equations and connected ideas. This is the foundation for the future guided-design mentor.</p><div className="heroSearch"><Search/><input placeholder="Try: P-Delta, shear force, stiffness..." value={query} onChange={e=>setQuery(e.target.value)}/></div></div><div className="heroGraphic"><div className="tower">{[0,1,2,3,4].map(f=><div className="floor" key={f}><i/><i/><i/><i/></div>)}<div className="ground"/></div><div className="loadArrow">LOAD PATH ↓</div></div></section>
-    <section className="contentGrid"><div className="library"><div className="sectionHead"><div><span className="eyebrow">KNOWLEDGE LIBRARY</span><h2>{category==='All'?'Core concepts':category}</h2></div><span className="count">{filtered.length} concepts</span></div><div className="cards">{filtered.map(k=><button className={selected.id===k.id?'concept selected':'concept'} key={k.id} onClick={()=>choose(k)}><div className="conceptTop"><span>{k.category}</span><ArrowRight size={16}/></div><h3>{k.title}</h3><p>{k.summary}</p><div className="relatedMini">{k.sections.related.slice(0,3).map(x=><span key={x}>{x.replaceAll('-',' ')}</span>)}</div></button>)}</div></div>
-    <aside className="detail"><div className="detailTop"><span className="pill">{selected.level}</span><span className="category">{selected.category}</span></div><h2>{selected.title}</h2><p className="lead">{selected.summary}</p><Detail label="Definition" text={selected.sections.definition}/><Detail label="Physical meaning" text={selected.sections.physical}/><Detail label="Engineering / equation" text={selected.sections.equation}/><Detail label="Practical engineering" text={selected.sections.practice}/><div className="related"><h3>Related concepts</h3><div>{selected.sections.related.map(r=>{const k=knowledge.find(x=>x.id===r);return <button key={r} onClick={()=>k&&choose(k)}>{k?.title||r.replaceAll('-',' ')}</button>})}</div></div></aside></section>
-    <section className="mentor"><div className="mentorIntro"><div className="mentorIcon"><MessageCircle/></div><div><span className="eyebrow">ENGINEERING MENTOR</span><h2>Ask the question behind the calculation.</h2><p>Start with the engineering concept. Later, this same interface will understand projects, selected codes and imported analysis results.</p></div></div><div className="chat"><div className="messages">{messages.length===0?<div className="empty"><b>Try asking:</b><div className="suggestions"><button onClick={()=>setChat('Why does a beam bend?')}>Why does a beam bend?</button><button onClick={()=>setChat('Why can a column buckle?')}>Why can a column buckle?</button><button onClick={()=>setChat('What is stiffness?')}>What is stiffness?</button><button onClick={()=>setChat('What is a load path?')}>What is a load path?</button></div></div>:messages.map((m,i)=><div key={i} className="msg"><div className="userQ">{m.q}</div><div className="answer"><Sparkles size={15}/><span>{m.a}</span></div></div>)}</div><form onSubmit={ask} className="chatForm"><input value={chat} onChange={e=>setChat(e.target.value)} placeholder="Ask a structural engineering question..."/><button>Ask mentor <ArrowRight size={16}/></button></form></div></section>
-   </main>
-  </div>
- </div>
+function HomePage({ onNavigate }) {
+  return (
+    <div className="site-shell">
+
+      {/* NAVIGATION */}
+      <header className="topbar">
+        <div className="brand">
+          <div className="brand-mark">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div className="brand-text">
+            <strong>STRUCTIQ</strong>
+            <small>STRUCTURAL ENGINEERING SYSTEM</small>
+          </div>
+        </div>
+
+        <nav className="nav-links">
+          <button
+            onClick={() => onNavigate("knowledge")}
+            className="nav-link"
+          >
+            Knowledge
+          </button>
+
+          <button
+            onClick={() => onNavigate("mentor")}
+            className="nav-link"
+          >
+            Mentor
+          </button>
+
+          <button
+            onClick={() => onNavigate("explore")}
+            className="nav-link"
+          >
+            Explore
+          </button>
+        </nav>
+
+        <div className="nav-status">
+          <span className="status-dot"></span>
+          ENGINEERING MODE
+        </div>
+      </header>
+
+
+      {/* HERO */}
+      <main>
+
+        <section className="hero">
+
+          {/* ENGINEERING GRID */}
+          <div className="engineering-grid"></div>
+
+          {/* BLUEPRINT LINES */}
+          <div className="blueprint blueprint-one"></div>
+          <div className="blueprint blueprint-two"></div>
+
+          {/* BACKGROUND STRUCTURE */}
+          <div className="structure-background">
+
+            <div className="column column-left"></div>
+            <div className="column column-middle"></div>
+            <div className="column column-right"></div>
+
+            <div className="beam beam-top"></div>
+            <div className="beam beam-middle"></div>
+            <div className="beam beam-bottom"></div>
+
+            <div className="brace brace-one"></div>
+            <div className="brace brace-two"></div>
+
+            <div className="load load-one">
+              <span>↓</span>
+              <small>W</small>
+            </div>
+
+            <div className="load load-two">
+              <span>↓</span>
+              <small>W</small>
+            </div>
+
+          </div>
+
+
+          {/* HERO CONTENT */}
+          <div className="hero-content">
+
+            <div className="eyebrow">
+              <span></span>
+              STRUCTURAL ENGINEERING · KNOWLEDGE · ANALYSIS
+            </div>
+
+            <h1>
+              Understand
+              <br />
+              <em>how structures</em>
+              <br />
+              work.
+            </h1>
+
+            <p className="hero-description">
+              A systematic environment for learning structural engineering
+              from first principles through mechanics, structural analysis,
+              design and professional engineering practice.
+            </p>
+
+            <div className="hero-actions">
+
+              <button
+                className="primary-button"
+                onClick={() => onNavigate("knowledge")}
+              >
+                <span>Explore the knowledge system</span>
+                <span className="arrow">→</span>
+              </button>
+
+              <button
+                className="secondary-button"
+                onClick={() => onNavigate("mentor")}
+              >
+                Enter mentor
+              </button>
+
+            </div>
+
+            <div className="hero-meta">
+              <div>
+                <strong>01</strong>
+                <span>FIRST PRINCIPLES</span>
+              </div>
+
+              <div>
+                <strong>02</strong>
+                <span>ANALYSIS</span>
+              </div>
+
+              <div>
+                <strong>03</strong>
+                <span>DESIGN</span>
+              </div>
+
+              <div>
+                <strong>04</strong>
+                <span>PRACTICE</span>
+              </div>
+            </div>
+
+          </div>
+
+
+          {/* TECHNICAL LABEL */}
+          <div className="technical-label label-top">
+            STRUCTIQ / 001
+          </div>
+
+          <div className="technical-label label-bottom">
+            STRUCTURAL SYSTEM
+            <span>LOAD → MEMBER → SUPPORT</span>
+          </div>
+
+        </section>
+
+
+        {/* SYSTEM OVERVIEW */}
+        <section className="system-section">
+
+          <div className="section-heading">
+
+            <div>
+              <span className="section-number">01 / SYSTEM</span>
+
+              <h2>
+                A structured way to
+                <br />
+                learn structural engineering.
+              </h2>
+            </div>
+
+            <p>
+              Structural engineering is not a collection of formulas.
+              StructIQ is organised around the way engineers actually
+              understand structures — from behaviour and mechanics to
+              analysis, design and judgement.
+            </p>
+
+          </div>
+
+
+          <div className="system-grid">
+
+            <article
+              className="system-card"
+              onClick={() => onNavigate("knowledge")}
+            >
+              <div className="card-number">01</div>
+
+              <div className="card-icon">
+                ∑
+              </div>
+
+              <div className="card-content">
+                <span>FOUNDATION</span>
+                <h3>Engineering Knowledge</h3>
+
+                <p>
+                  Mechanics, materials, loads, structural behaviour,
+                  mathematics and fundamental engineering principles.
+                </p>
+
+                <div className="card-link">
+                  Explore knowledge →
+                </div>
+              </div>
+            </article>
+
+
+            <article
+              className="system-card"
+              onClick={() => onNavigate("analysis")}
+            >
+              <div className="card-number">02</div>
+
+              <div className="card-icon">
+                ◇
+              </div>
+
+              <div className="card-content">
+                <span>BEHAVIOUR</span>
+                <h3>Structural Analysis</h3>
+
+                <p>
+                  Understand load paths, reactions, internal forces,
+                  deformation and how structural systems respond.
+                </p>
+
+                <div className="card-link">
+                  Explore analysis →
+                </div>
+              </div>
+            </article>
+
+
+            <article
+              className="system-card"
+              onClick={() => onNavigate("design")}
+            >
+              <div className="card-number">03</div>
+
+              <div className="card-icon">
+                ◫
+              </div>
+
+              <div className="card-content">
+                <span>APPLICATION</span>
+                <h3>Structural Design</h3>
+
+                <p>
+                  Move from analysis to reinforced concrete, steel,
+                  foundations and real engineering design decisions.
+                </p>
+
+                <div className="card-link">
+                  Explore design →
+                </div>
+              </div>
+            </article>
+
+
+            <article
+              className="system-card"
+              onClick={() => onNavigate("mentor")}
+            >
+              <div className="card-number">04</div>
+
+              <div className="card-icon">
+                ?
+              </div>
+
+              <div className="card-content">
+                <span>GUIDANCE</span>
+                <h3>Engineering Mentor</h3>
+
+                <p>
+                  Ask questions, investigate concepts and work through
+                  structural engineering problems step by step.
+                </p>
+
+                <div className="card-link">
+                  Enter mentor →
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+        </section>
+
+
+        {/* ENGINEERING PRINCIPLE */}
+        <section className="principle-section">
+
+          <div className="principle-label">
+            ENGINEERING PRINCIPLE
+          </div>
+
+          <div className="principle-main">
+            <span className="quote-mark">“</span>
+
+            <h2>
+              Every structure tells a story
+              <br />
+              through its <em>load path.</em>
+            </h2>
+
+            <p>
+              Load enters the structure, travels through members,
+              connections and supports, and ultimately reaches the ground.
+              Understanding that behaviour is at the heart of structural
+              engineering.
+            </p>
+          </div>
+
+          <div className="load-path-diagram">
+
+            <div className="path-node">
+              <span>01</span>
+              <strong>LOAD</strong>
+              <small>Applied action</small>
+            </div>
+
+            <div className="path-line">
+              →
+            </div>
+
+            <div className="path-node">
+              <span>02</span>
+              <strong>MEMBER</strong>
+              <small>Structural response</small>
+            </div>
+
+            <div className="path-line">
+              →
+            </div>
+
+            <div className="path-node">
+              <span>03</span>
+              <strong>SUPPORT</strong>
+              <small>Reaction</small>
+            </div>
+
+            <div className="path-line">
+              →
+            </div>
+
+            <div className="path-node">
+              <span>04</span>
+              <strong>GROUND</strong>
+              <small>Load transfer</small>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* FOOTER */}
+        <footer className="footer">
+
+          <div className="footer-brand">
+            <div className="brand-mark small">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div>
+              <strong>STRUCTIQ</strong>
+              <small>STRUCTURAL ENGINEERING SYSTEM</small>
+            </div>
+          </div>
+
+          <p>
+            Learn. Analyse. Design. Understand.
+          </p>
+
+          <span className="footer-code">
+            SE / SYSTEM / 2026
+          </span>
+
+        </footer>
+
+      </main>
+
+    </div>
+  );
 }
-function Detail({label,text}){return <div className="detailSection"><h4>{label}</h4><p>{text}</p></div>}
-createRoot(document.getElementById('root')).render(<App/>);
+
+
+/*
+  ---------------------------------------------------------
+  KEEP YOUR EXISTING APPLICATION LOGIC HERE
+  ---------------------------------------------------------
+
+  If your existing project already has navigation/state,
+  replace the navigate function below with your existing
+  navigation logic.
+
+  For now this makes the homepage work independently.
+*/
+
+function App() {
+
+  const [page, setPage] = React.useState("home");
+
+  const navigate = (destination) => {
+    setPage(destination);
+  };
+
+  if (page === "home") {
+    return <HomePage onNavigate={navigate} />;
+  }
+
+  return (
+    <div className="placeholder-page">
+
+      <button
+        className="back-button"
+        onClick={() => setPage("home")}
+      >
+        ← Back to home
+      </button>
+
+      <div>
+        <span className="section-number">STRUCTIQ</span>
+
+        <h1>
+          {page === "knowledge" && "Knowledge System"}
+
+          {page === "mentor" && "Engineering Mentor"}
+
+          {page === "analysis" && "Structural Analysis"}
+
+          {page === "design" && "Structural Design"}
+
+          {page === "explore" && "Explore"}
+
+        </h1>
+
+        <p>
+          Your existing application content can be connected
+          to this section without changing the homepage design.
+        </p>
+      </div>
+
+    </div>
+  );
+}
+
+
+ReactDOM.createRoot(
+  document.getElementById("root")
+).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

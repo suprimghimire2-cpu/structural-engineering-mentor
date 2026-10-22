@@ -1,0 +1,43 @@
+{
+  "id": "bending-moment",
+  "term": "Bending Moment",
+  "category": "Structural Mechanics",
+
+  "definition": "A bending moment is the internal moment developed in a structural member as a result of external loads and reactions.",
+
+  "physicalMeaning": "It represents the tendency of forces acting on a structural member to cause it to rotate or bend.",
+
+  "units": [
+    "N·m",
+    "kN·m",
+    "lb·ft",
+    "kip·ft"
+  ],
+
+  "whereUsed": [
+    "Beams",
+    "Slabs",
+    "Frames",
+    "Columns",
+    "Foundations"
+  ],
+
+  "relatedConcepts": [
+    "Shear Force",
+    "Deflection",
+    "Curvature",
+    "Flexural Strength",
+    "Stress",
+    "Strain"
+  ],
+
+  "engineeringImportance": "Bending moment is fundamental to understanding flexural behaviour and is used extensively in structural analysis and design.",
+
+  "practicalImportance": "Engineers use bending moments to understand how members respond to loading and to determine the required flexural capacity and reinforcement or section properties.",
+
+  "failureImplications": [
+    "Excessive bending can cause yielding",
+    "Reinforced concrete members may develop flexural cracking",
+    "Insufficient flexural capacity can lead to structural failure"
+  ]
+}

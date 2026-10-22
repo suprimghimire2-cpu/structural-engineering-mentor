@@ -1,0 +1,24 @@
+{
+  "id": "stress",
+  "term": "Stress",
+  "category": "Structural Mechanics",
+  "definition": "Stress describes the internal force intensity acting over an area within a material.",
+  "physicalMeaning": "Stress tells us how intensely a material is being loaded internally.",
+  "equation": "σ = P / A",
+  "units": ["Pa", "MPa", "N/mm²", "psi", "ksi"],
+  "types": [
+    "Normal Stress",
+    "Tensile Stress",
+    "Compressive Stress",
+    "Shear Stress"
+  ],
+  "engineeringImportance": "Stress is used to compare the intensity of structural actions with the capacity of materials.",
+  "practicalImportance": "Engineers use stress to assess whether a material or structural section is being subjected to acceptable levels of internal force.",
+  "relatedConcepts": [
+    "Force",
+    "Strain",
+    "Strength",
+    "Elasticity",
+    "Yielding"
+  ]
+}

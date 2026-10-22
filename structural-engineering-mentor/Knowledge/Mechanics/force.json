@@ -1,0 +1,23 @@
+{
+  "id": "force",
+  "term": "Force",
+  "category": "Structural Mechanics",
+  "definition": "A force is an interaction that can change the motion of a body or produce deformation within a structural system.",
+  "physicalMeaning": "In structures, forces represent actions that push, pull, or otherwise act on structural members.",
+  "units": ["N", "kN", "lb", "kip"],
+  "types": [
+    "Tension",
+    "Compression",
+    "Shear"
+  ],
+  "engineeringImportance": "Understanding force is fundamental to determining how loads travel through a structure and how structural members respond.",
+  "practicalImportance": "Engineers use forces to establish equilibrium, determine internal actions, size structural members, and check structural safety.",
+  "relatedConcepts": [
+    "Equilibrium",
+    "Stress",
+    "Strain",
+    "Axial Force",
+    "Shear Force",
+    "Bending Moment"
+  ]
+}

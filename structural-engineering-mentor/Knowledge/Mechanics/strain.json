@@ -1,0 +1,26 @@
+{
+  "id": "strain",
+  "term": "Strain",
+  "category": "Structural Mechanics",
+  "definition": "Strain is the deformation of a material relative to its original dimension.",
+  "physicalMeaning": "Strain describes how much a material changes shape or length when subjected to loading.",
+  "equation": "ε = ΔL / L",
+  "units": [
+    "Dimensionless",
+    "%"
+  ],
+  "types": [
+    "Tensile Strain",
+    "Compressive Strain",
+    "Shear Strain"
+  ],
+  "engineeringImportance": "Strain is fundamental to understanding material deformation and constitutive behaviour.",
+  "practicalImportance": "Engineers use strain to evaluate deformation, material behaviour, serviceability and structural performance.",
+  "relatedConcepts": [
+    "Stress",
+    "Elasticity",
+    "Plasticity",
+    "Young's Modulus",
+    "Deformation"
+  ]
+}

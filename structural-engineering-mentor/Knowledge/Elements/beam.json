@@ -1,0 +1,31 @@
+{
+  "id": "beam",
+  "term": "Beam",
+  "category": "Structural Elements",
+  "definition": "A beam is a structural member primarily designed to resist transverse loading through bending and shear.",
+  "primaryActions": [
+    "Bending",
+    "Shear"
+  ],
+  "typicalMaterials": [
+    "Reinforced Concrete",
+    "Structural Steel",
+    "Timber",
+    "Composite Materials"
+  ],
+  "commonFailureModes": [
+    "Flexural Failure",
+    "Shear Failure",
+    "Excessive Deflection",
+    "Lateral Torsional Buckling"
+  ],
+  "engineeringImportance": "Beams transfer loads from slabs and other structural components toward supports such as columns and walls.",
+  "practicalImportance": "Beam behaviour is strongly influenced by span, loading, support conditions, material properties, cross-section and connection behaviour.",
+  "relatedConcepts": [
+    "Bending Moment",
+    "Shear Force",
+    "Deflection",
+    "Flexural Strength",
+    "Reinforcement"
+  ]
+}

@@ -1,0 +1,840 @@
+import React, { useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import {
+  Search,
+  BookOpen,
+  MessageCircle,
+  ChevronRight,
+  Sparkles,
+  ArrowRight,
+  Menu,
+  X
+} from 'lucide-react';
+
+import { knowledge, categories, findKnowledge } from './data/knowledge';
+import './styles.css';
+
+function App() {
+  const [query, setQuery] = useState('');
+
+  const [selected, setSelected] = useState(
+    knowledge.find((k) => k.id === 'beam') || knowledge[0]
+  );
+
+  const [category, setCategory] = useState('All');
+  const [mobile, setMobile] = useState(false);
+
+  const [chat, setChat] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  const filtered = useMemo(() => {
+    return knowledge.filter(
+      (k) =>
+        (category === 'All' || k.category === category) &&
+        (!query ||
+          k.title.toLowerCase().includes(query.toLowerCase()) ||
+          k.summary.toLowerCase().includes(query.toLowerCase()))
+    );
+  }, [query, category]);
+
+  const choose = (k) => {
+    setSelected(k);
+    setMessages([]);
+    setMobile(false);
+  };
+
+  const ask = (e) => {
+    e.preventDefault();
+
+    if (!chat.trim()) return;
+
+    const q = chat.trim();
+    const hit = findKnowledge(q);
+
+    setMessages((m) => [
+      ...m,
+      {
+        q,
+        a: hit
+          ? `This question is closely related to ${hit.title}. ${hit.summary} ${hit.sections.physical}`
+          : 'I do not have a verified concept match yet. Try asking about bending moment, shear, stiffness, buckling, load path, diaphragm, beam, column, slab, shear wall, or foundation.'
+      }
+    ]);
+
+    setChat('');
+  };
+
+  return (
+    <div className="app">
+
+      {/* =====================================================
+          HEADER
+      ===================================================== */}
+
+      <header className="top">
+
+        <div className="brand">
+
+          <div className="brandMark">
+            S
+          </div>
+
+          <div>
+
+            <div className="brandName">
+              STRUCTURE<span>MENTOR</span>
+            </div>
+
+            <div className="brandSub">
+              Structural Engineering Knowledge Platform · V0.1
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          className="mobileBtn"
+          onClick={() => setMobile(!mobile)}
+        >
+          {mobile ? <X /> : <Menu />}
+        </button>
+
+
+        <div className="topSearch">
+
+          <Search size={18} />
+
+          <input
+            placeholder="Search any engineering concept..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+
+        </div>
+
+      </header>
+
+
+      {/* =====================================================
+          LAYOUT
+      ===================================================== */}
+
+      <div className="layout">
+
+
+        {/* =====================================================
+            SIDEBAR
+        ===================================================== */}
+
+        <aside
+          className={mobile ? 'sidebar open' : 'sidebar'}
+        >
+
+          <div className="sideTitle">
+            Explore
+          </div>
+
+
+          <button
+            className={
+              category === 'All'
+                ? 'sideBtn active'
+                : 'sideBtn'
+            }
+            onClick={() => setCategory('All')}
+          >
+
+            <BookOpen />
+
+            All knowledge
+
+          </button>
+
+
+          {categories.map((c) => (
+
+            <button
+              key={c}
+              className={
+                category === c
+                  ? 'sideBtn active'
+                  : 'sideBtn'
+              }
+              onClick={() => setCategory(c)}
+            >
+
+              <ChevronRight />
+
+              {c}
+
+            </button>
+
+          ))}
+
+
+          <div className="sideCard">
+
+            <Sparkles size={18} />
+
+            <b>
+              Mentor mode
+            </b>
+
+            <p>
+              Ask why, how, what-if, or practical engineering questions.
+            </p>
+
+          </div>
+
+        </aside>
+
+
+        {/* =====================================================
+            MAIN
+        ===================================================== */}
+
+        <main className="main">
+
+
+          {/* =================================================
+              HERO
+          ================================================= */}
+
+          <section className="hero">
+
+            <div>
+
+              <div className="eyebrow">
+                ENGINEERING KNOWLEDGE ENGINE
+              </div>
+
+
+              <h1>
+                Understand structures.
+                <br />
+                <em>Think like an engineer.</em>
+              </h1>
+
+
+              <p>
+                Explore structural concepts through definitions,
+                mechanics, practical meaning, failure modes,
+                equations and connected ideas. This is the
+                foundation for the future guided-design mentor.
+              </p>
+
+
+              <div className="heroSearch">
+
+                <Search />
+
+                <input
+                  placeholder="Try: P-Delta, shear force, stiffness..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+
+              </div>
+
+            </div>
+
+
+            <div className="heroGraphic">
+
+              <div className="tower">
+
+                {[0, 1, 2, 3, 4].map((f) => (
+
+                  <div
+                    className="floor"
+                    key={f}
+                  >
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+
+                ))}
+
+                <div className="ground" />
+
+              </div>
+
+
+              <div className="loadArrow">
+                LOAD PATH ↓
+              </div>
+
+            </div>
+
+          </section>
+
+
+          {/* =================================================
+              KNOWLEDGE AREA
+          ================================================= */}
+
+          <section className="contentGrid">
+
+
+            {/* ===============================================
+                LIBRARY
+            =============================================== */}
+
+            <div className="library">
+
+              <div className="sectionHead">
+
+                <div>
+
+                  <span className="eyebrow">
+                    KNOWLEDGE LIBRARY
+                  </span>
+
+                  <h2>
+                    {category === 'All'
+                      ? 'Core concepts'
+                      : category}
+                  </h2>
+
+                </div>
+
+
+                <span className="count">
+                  {filtered.length} concepts
+                </span>
+
+              </div>
+
+
+              <div className="cards">
+
+                {filtered.map((k) => (
+
+                  <button
+                    className={
+                      selected?.id === k.id
+                        ? 'concept selected'
+                        : 'concept'
+                    }
+                    key={k.id}
+                    onClick={() => choose(k)}
+                  >
+
+                    <div className="conceptTop">
+
+                      <span>
+                        {k.category}
+                      </span>
+
+                      <ArrowRight size={16} />
+
+                    </div>
+
+
+                    <h3>
+                      {k.title}
+                    </h3>
+
+
+                    <p>
+                      {k.summary}
+                    </p>
+
+
+                    <div className="relatedMini">
+
+                      {k.sections.related
+                        .slice(0, 3)
+                        .map((x) => (
+
+                          <span key={x}>
+                            {x.replaceAll('-', ' ')}
+                          </span>
+
+                        ))}
+
+                    </div>
+
+                  </button>
+
+                ))}
+
+              </div>
+
+            </div>
+
+
+            {/* ===============================================
+                ENGINEERING DETAIL PANEL
+            =============================================== */}
+
+            {selected && (
+
+              <aside className="detail">
+
+
+                <div className="detailTop">
+
+                  <span className="pill">
+                    {selected.level}
+                  </span>
+
+                  <span className="category">
+                    {selected.category}
+                  </span>
+
+                </div>
+
+
+                <h2>
+                  {selected.title}
+                </h2>
+
+
+                <p className="lead">
+                  {selected.summary}
+                </p>
+
+
+                {/* =========================================
+                    CORE ENGINEERING KNOWLEDGE
+                ========================================= */}
+
+                <Detail
+                  label="Definition"
+                  text={selected.sections.definition}
+                />
+
+
+                <Detail
+                  label="Structural role"
+                  text={selected.sections.role}
+                />
+
+
+                <Detail
+                  label="Physical meaning"
+                  text={selected.sections.physical}
+                />
+
+
+                <Detail
+                  label="How it behaves"
+                  text={selected.sections.behaviour}
+                />
+
+
+                <Detail
+                  label="Load path"
+                  text={selected.sections.loadPath}
+                />
+
+
+                <Detail
+                  label="Engineering / equation"
+                  text={selected.sections.equation}
+                />
+
+
+                <Detail
+                  label="Analysis"
+                  text={selected.sections.analysis}
+                />
+
+
+                <Detail
+                  label="How to interpret results"
+                  text={selected.sections.resultInterpretation}
+                />
+
+
+                <Detail
+                  label="Practical engineering"
+                  text={selected.sections.practice}
+                />
+
+
+                <Detail
+                  label="Design thinking"
+                  text={selected.sections.designThinking}
+                />
+
+
+                <Detail
+                  label="Construction considerations"
+                  text={selected.sections.construction}
+                />
+
+
+                <Detail
+                  label="Why can it fail?"
+                  text={selected.sections.failureReasoning}
+                />
+
+
+                {/* =========================================
+                    FAILURE MODES
+                ========================================= */}
+
+                <ListDetail
+                  label="Failure modes"
+                  items={selected.sections.failureModes}
+                />
+
+
+                {/* =========================================
+                    COMMON MISTAKES
+                ========================================= */}
+
+                <ListDetail
+                  label="Common mistakes"
+                  items={selected.sections.commonMistakes}
+                />
+
+
+                {/* =========================================
+                    TROUBLESHOOTING
+                ========================================= */}
+
+                <ListDetail
+                  label="Troubleshooting"
+                  items={selected.sections.troubleshooting}
+                />
+
+
+                {/* =========================================
+                    PRACTICAL ENGINEERING QUESTION
+                ========================================= */}
+
+                {selected.sections.practicalQuestion && (
+
+                  <div className="practicalQuestion">
+
+                    <div className="practicalQuestionIcon">
+                      ?
+                    </div>
+
+                    <div>
+
+                      <span className="eyebrow">
+                        ENGINEER'S QUESTION
+                      </span>
+
+                      <p>
+                        {selected.sections.practicalQuestion}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                <ListDetail
+                  label="Practical engineering questions"
+                  items={selected.sections.practicalQuestions}
+                />
+
+
+                {/* =========================================
+                    RELATED CONCEPTS
+                ========================================= */}
+
+                <div className="related">
+
+                  <h3>
+                    Related concepts
+                  </h3>
+
+
+                  <div>
+
+                    {selected.sections.related.map((r) => {
+
+                      const k = knowledge.find(
+                        (x) => x.id === r
+                      );
+
+
+                      return (
+
+                        <button
+                          key={r}
+                          onClick={() =>
+                            k && choose(k)
+                          }
+                        >
+
+                          {k?.title ||
+                            r.replaceAll('-', ' ')}
+
+                        </button>
+
+                      );
+
+                    })}
+
+                  </div>
+
+                </div>
+
+
+              </aside>
+
+            )}
+
+          </section>
+
+
+          {/* =================================================
+              ENGINEERING MENTOR
+          ================================================= */}
+
+          <section className="mentor">
+
+
+            <div className="mentorIntro">
+
+              <div className="mentorIcon">
+                <MessageCircle />
+              </div>
+
+
+              <div>
+
+                <span className="eyebrow">
+                  ENGINEERING MENTOR
+                </span>
+
+
+                <h2>
+                  Ask the question behind the calculation.
+                </h2>
+
+
+                <p>
+                  Start with the engineering concept.
+                  Later, this same interface will understand
+                  projects, selected codes and imported
+                  analysis results.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div className="chat">
+
+
+              <div className="messages">
+
+                {messages.length === 0 ? (
+
+                  <div className="empty">
+
+                    <b>
+                      Try asking:
+                    </b>
+
+
+                    <div className="suggestions">
+
+
+                      <button
+                        onClick={() =>
+                          setChat(
+                            'Why does a beam bend?'
+                          )
+                        }
+                      >
+                        Why does a beam bend?
+                      </button>
+
+
+                      <button
+                        onClick={() =>
+                          setChat(
+                            'Why can a column buckle?'
+                          )
+                        }
+                      >
+                        Why can a column buckle?
+                      </button>
+
+
+                      <button
+                        onClick={() =>
+                          setChat(
+                            'What is stiffness?'
+                          )
+                        }
+                      >
+                        What is stiffness?
+                      </button>
+
+
+                      <button
+                        onClick={() =>
+                          setChat(
+                            'What is a load path?'
+                          )
+                        }
+                      >
+                        What is a load path?
+                      </button>
+
+
+                    </div>
+
+                  </div>
+
+                ) : (
+
+                  messages.map((m, i) => (
+
+                    <div
+                      key={i}
+                      className="msg"
+                    >
+
+                      <div className="userQ">
+                        {m.q}
+                      </div>
+
+
+                      <div className="answer">
+
+                        <Sparkles size={15} />
+
+                        <span>
+                          {m.a}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  ))
+
+                )}
+
+              </div>
+
+
+              <form
+                onSubmit={ask}
+                className="chatForm"
+              >
+
+                <input
+                  value={chat}
+                  onChange={(e) =>
+                    setChat(e.target.value)
+                  }
+                  placeholder="Ask a structural engineering question..."
+                />
+
+
+                <button>
+                  Ask mentor
+                  <ArrowRight size={16} />
+                </button>
+
+              </form>
+
+            </div>
+
+          </section>
+
+        </main>
+
+      </div>
+
+    </div>
+  );
+}
+
+
+/* =========================================================
+   TEXT DETAIL COMPONENT
+========================================================= */
+
+function Detail({ label, text }) {
+
+  if (!text) {
+    return null;
+  }
+
+
+  return (
+
+    <div className="detailSection">
+
+      <h4>
+        {label}
+      </h4>
+
+
+      <p>
+        {text}
+      </p>
+
+    </div>
+
+  );
+}
+
+
+/* =========================================================
+   LIST DETAIL COMPONENT
+========================================================= */
+
+function ListDetail({ label, items }) {
+
+  if (!items || items.length === 0) {
+    return null;
+  }
+
+
+  return (
+
+    <div className="detailSection">
+
+      <h4>
+        {label}
+      </h4>
+
+
+      <ul className="engineeringList">
+
+        {items.map((item, index) => (
+
+          <li key={index}>
+            {item}
+          </li>
+
+        ))}
+
+      </ul>
+
+    </div>
+
+  );
+}
+
+
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
+createRoot(
+  document.getElementById('root')
+).render(
+  <App />
+);

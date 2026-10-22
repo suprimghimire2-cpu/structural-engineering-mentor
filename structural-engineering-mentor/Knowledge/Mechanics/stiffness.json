@@ -1,0 +1,17 @@
+{
+  "id": "stiffness",
+  "term": "Stiffness",
+  "category": "Structural Mechanics",
+  "definition": "Stiffness describes the resistance of a structural system or member to deformation under applied loading.",
+  "physicalMeaning": "A stiffer structure generally deforms less when subjected to the same loading.",
+  "engineeringImportance": "Stiffness controls deformation, load distribution, structural response and stability.",
+  "practicalImportance": "Engineers consider stiffness when controlling deflection, drift, vibration and the distribution of forces between structural members.",
+  "relatedConcepts": [
+    "Strength",
+    "Deflection",
+    "Young's Modulus",
+    "Moment of Inertia",
+    "Stability",
+    "P-Delta"
+  ]
+}
