@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from "react";
+import Nav from "../components/Nav";
+import "../styles/codes.css";
 import { aci318, is456, ec2, validate, barLayout, minClearSpacing, simpleSpanShear } from "../calculations/rcBeam.js";
 
 const CODE_META = [
@@ -56,6 +58,8 @@ export default function Codes() {
   const h = input.d + input.cover + 8 + input.db / 2;
 
   return (
+    <>
+    <Nav current="codes" />
     <div className="page-wrap wide">
       <div className="eyebrow-line">CODE LEARNING & COMPARISON · RC BEAM FLEXURE</div>
       <h1>One beam, three codes</h1>
@@ -137,5 +141,6 @@ export default function Codes() {
         </div>
       </>)}
     </div>
+    </>
   );
 }

@@ -1,0 +1,23 @@
+/* STRUCTIQ — Design tokens */
+:root {
+  --bg:        #F8F7F3;
+  --bg-alt:    #F0EEE9;
+  --bg-deep:   #E8E5DE;
+  --surface:   #FFFFFF;
+  --ink-1:     #141412;
+  --ink-2:     #3D3A35;
+  --ink-3:     #706C66;
+  --ink-4:     #A8A39C;
+  --rule:      #D4D0C8;
+  --rule-lt:   #E4E1D8;
+  --brand:     #1A2E1E;
+  --brand-mid: #2B4A33;
+  --brand-lt:  #E6EDE7;
+  --red:       #9B1C1C;
+  --red-lt:    rgba(155,28,28,0.07);
+  --sans:      'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --mono:      'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
