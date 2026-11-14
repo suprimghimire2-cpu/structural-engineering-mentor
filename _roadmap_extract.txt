@@ -1,0 +1,1180 @@
+PRODUCT BASELINE / ENGINEERING ROADMAP
+StructIQ
+Structural Engineering Knowledge, Learning & Engineering Platform
+LOAD PATH / CONCEPTUAL FRAME
+LOAD
+MEMBER
+SUPPORT
+GROUND
+STRUCTURAL BAY / SCHEMATIC
+Purpose
+An actionable foundation for the StructIQ product,
+engineering content strategy, architecture and phased
+implementation.
+Positioning
+Understand physical behaviour; connect theory,
+analysis, design, construction and judgement.
+Research snapshot: 23 October 2026
+Use this guide as a living baseline. Standards, official adoption, software capabilities and best practices change;
+re-check live sources before implementation or professional use.
+Prepared from the supplied StructIQ brief plus targeted research from official standards bodies, technical documentation and web-platform
+guidance.
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+2
+How to use this document
+This is a product and technical baseline, not a complete review of all structural engineering literature or a substitute for
+current standards. Use the roadmap to prioritise work, the domain map to plan content, and the references to verify
+decisions. The phases are recommendations and may be adjusted after the repository audit and feedback from
+learners/engineers.
+Contents
+ Executive summary
+1. Purpose and product definition
+2. Baseline: existing prototype and immediate audit
+3. Product experience and information architecture
+4. Knowledge architecture: use a structured schema, not a giant React file
+5. Structural engineering domain map
+6. Codes and standards strategy: global, modular, jurisdiction-aware
+7. Calculators and interactive visualisations
+8. Mentor: a domain-aware tutor, not just a chat window
+9. Search and discovery
+10. Technical architecture recommendation
+11. Quality assurance and validation
+12. Delivery roadmap and priorities
+13. Feature opportunity matrix
+14. Governance, professional boundaries and licensing
+15. Key risks and mitigations
+16. First 30 / 60 / 90 days
+17. Minimum acceptance checklist for every release
+18. Research method and limitations
+19. Official reference register
+Final recommendation
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+3
+Foundational roadmap | Research reviewed: 23 October 2026
+Executive summary
+StructIQ is intended to become a professional-grade structural engineering knowledge and mentorship platform that
+helps learners and engineers progress from first principles to analysis, design, advanced methods and professional
+judgement. It should not be a glossary dressed as a website, a generic chatbot, or an unverified design calculator. Its
+core differentiator should be the connection between physical behaviour, mathematical formulation, analysis, design
+provisions, construction and engineering decisions.
+The recommended strategy is to build in layers. Start with a dependable, sourced knowledge system and an excellent
+structural-engineering user experience. Add interactive, independently verified educational mechanics tools. Then add
+carefully scoped code-aware workflows and import/interpretation support. Advanced analysis, automated design and
+AI-assisted engineering should come later, behind explicit validation, auditability and professional review.
+The existing prototype is described by the project brief as a Vite + React JavaScript application with src/main.jsx,
+src/styles.css, src/data/knowledge.js, src/components/, Knowledge/, scripts/, index.html, package.json,
+package-lock.json, and vite.config.js. The brief says Knowledge, Mentor and Explore experiences exist to some
+degree, but it does not establish that each feature is complete or production-ready. A developer must audit the
+repository before changing it.
+The governing product principle
+Help users reason about structures, not merely retrieve formulas. Every concept should explain what it is, why it
+matters, how it behaves, what assumptions and equations apply, how to interpret results, what can fail, which rules are
+code-specific, and how the topic connects to a real structural system.
+Five design commitments
+ 1. Engineering integrity: sources, equations, assumptions, units, applicability and verification are visible.
+ 2. Conceptual coherence: knowledge is a graph of prerequisites and relationships, not a flat list of pages.
+ 3. Progressive capability: education first; verified calculations next; advanced professional workflows only after validation.
+ 4. Professional product design: technical, architectural, restrained, accessible, readable and responsive—not generic
+ AI/SaaS styling.
+5. Preserve and improve: audit and protect the existing prototype before refactoring; never sacrifice working knowledge
+ data for visual polish.
+1. Purpose and product definition
+1.1 What StructIQ is
+StructIQ is a structural engineering knowledge, learning and mentorship environment, with a planned path toward
+interactive analysis and design support. It should connect:
+ • Core mechanics and strength of materials
+ • Structural elements and systems
+ • Structural analysis and interpretation
+ • Materials and design methods
+ • Loads, combinations and hazards
+ • Foundations and the structure–geotechnical interface
+ • Seismic, wind and structural dynamics
+ • Codes, standards and jurisdictional application
+ • Drawings, detailing, constructability and quality assurance
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+4
+• Verification, case studies and engineering judgement
+ • Educational exercises and carefully validated calculators
+ 
+1.2 Audience and jobs to be done
+Students and early-career engineers: build concepts in a sequence; connect formulas to physical behaviour; practise
+with worked examples; diagnose misunderstandings.
+Graduate/Master's-track learners: deepen matrix analysis, stability, FEM, dynamics, earthquake engineering, research
+methods and critical evaluation of numerical models.
+Practising engineers: access concise references, assumptions, cross-linked topics, code references, modelling
+considerations and verification checklists. Any professional use must be transparent about scope and must not imply an
+unreviewed answer is safe for construction.
+Educators/researchers (later): curate material, construct learning paths, use case studies and compare conceptual
+approaches across standards.
+1.3 What StructIQ is not at first
+It is not initially a replacement for an engineer of record, commercial structural analysis software, current licensed
+codes, geotechnical investigation, peer review, site-specific judgement or regulatory approval. It should not claim to
+generate construction-ready designs unless the complete technical, validation, legal and professional governance
+framework exists.
+2. Baseline: existing prototype and immediate audit
+The supplied project brief describes a Vite + React app with a knowledge data module, UI components and existing
+Knowledge/Mentor/Explore areas. This is a user-supplied description, not an independent code audit. The first
+development task is to confirm the live repository state.
+2.1 Repository audit checklist
+ • Confirm the repository root, scripts and supported Node version.
+ • Inspect package.json, lockfile and Vite configuration.
+ • Locate the app entry, page composition, routing and styles.
+ • Inspect src/data/knowledge.js schema and all concept IDs.
+ • Inventory Knowledge/ and src/components/; identify overlap and duplication.
+ • Verify imports and stylesheet loading. Check for global CSS collisions and broken asset paths.
+ • Run the existing build before edits; record baseline results.
+ • Test search, category filtering, concept selection, related links, Mentor and browser back/forward.
+ • Confirm whether routes are real routes or only client-side path state; configure hosting fallback accordingly.
+ • Review Git status and ignore generated folders. Commit only source files and required lockfiles, not node_modules/ or
+ generated dist/.
+• Create a named baseline commit/backup before refactoring.
+ 
+2.2 Baseline definition of done
+The current application starts locally, builds without errors, all existing concept IDs resolve, navigation and search are
+tested, and the developer can identify which behaviours are implemented versus mockups or placeholders. Record
+known bugs rather than hiding them during the redesign.
+3. Product experience and information architecture
+Recommended top-level navigation:
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+5
+• Home — product orientation and discovery, not the knowledge library itself.
+ • Knowledge — concepts, elements, systems and related topics.
+ • Learn — guided paths, prerequisites, lessons, problems and progress (phase later).
+ • Mentor — guided explanation and question flow, connected to verified knowledge.
+ • Analysis — educational mechanics tools first; advanced methods after verification.
+ • Design — future code-aware workflows, visibly marked as planned until implemented.
+ • References — sources, standards metadata, editions, errata and update history.
+ Avoid navigation items that only lead to placeholders. In the initial public prototype, keep Home, Knowledge and
+Mentor functional; expose planned areas only as labelled roadmap previews or omit them.
+3.1 Homepage narrative
+The homepage should show, within seconds, that StructIQ is about real structural engineering. Recommended
+sequence:
+ 1. Restrained navigation and clear product identity.
+ 2. Engineering-led opening composition: a meaningful frame, force/load-path drawing or structural section, not a generic
+ stock building photo or oversized empty marketing hero.
+3. Concise value statement: “Understand how structures work.”
+ 4. Clear actions into Knowledge and Mentor.
+ 5. A visual explanation of how knowledge connects: fundamentals → mechanics → analysis → member behaviour →
+ design → systems → practice.
+6. Structural element explorer connected to real concept IDs.
+ 7. A load-path/behaviour illustration that distinguishes gravity and lateral load transfer.
+ 8. Learning and practice preview.
+ 9. Global principles and code-specific layers explained without implying every code is already supported.
+ 10. Trust/reference section explaining source policy, review state and limitations.
+ 
+3.2 Visual design system
+Visual language: technical editorial design, engineering documentation, architectural drawing and carefully composed
+software UI. Use technical grids, member labels, dimensions, section references, line-weight hierarchy and restrained
+diagrams only where they clarify meaning.
+Palette direction: graphite/charcoal, warm off-white, concrete grey, muted steel and a restrained olive/green accent.
+Use status colour semantically: error, warning, informational and verified; do not decorate every element.
+Typography: readable sans-serif for UI/body; restrained display face for main statements; monospaced technical labels
+for dimensions, identifiers and metadata. Keep body text highly readable and information density deliberate.
+Avoid: excessive rounded cards, gradients, glassmorphism, floating glows, random icons, unsubstantiated statistics,
+decorative pseudo-technical labels, animation without meaning and stock engineering imagery that does not connect to
+content.
+Accessibility: target WCAG 2.2 AA as a design objective; use semantic HTML, keyboard operation, visible focus,
+adequate contrast, accessible form labels, reduced-motion support, responsive text and diagrams with text alternatives.
+W3C identifies WCAG 2.2 as the current recommendation and notes its relationship to ISO/IEC 40500. [R1]
+4. Knowledge architecture: use a structured schema,
+not a giant React file
+The existing knowledge schema should be retained where useful and evolved deliberately. Separate presentation from
+authored engineering content, calculations and standard-specific rules.
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+6
+4.1 Recommended concept record
+Each concept should eventually support:
+ • Stable ID and canonical title
+ • Aliases, search keywords and discipline/category
+ • Intended level and prerequisite concept IDs
+ • Short summary and learning objectives
+ • Physical intuition / behaviour
+ • Definition and scope
+ • Diagram or visualization specification
+ • Assumptions and limitations
+ • Variables, symbols and units
+ • Equations with definitions, domains of validity and reference
+ • Worked examples with unit-consistent steps
+ • Interpretation and engineering implications
+ • Failure modes and common misconceptions
+ • Practice questions and solutions
+ • Related concept IDs and relationship types
+ • Code applicability where appropriate, kept separate from universal mechanics
+ • References with publisher, title, edition/date, URL/DOI, access date and support statement
+ • Review status, reviewer, last verified date and change history
+ 
+4.2 Relationship graph
+Represent relationships explicitly: prerequisite, applies-to, explains, used-in, design-check-for, failure-mode-of,
+governed-by, illustrated-by and contrasts-with. This enables “learn next”, related concepts, learning paths and search
+relevance without hard-coding these behaviours into UI components.
+4.3 Knowledge quality states
+Recommended labels:
+ • Draft — incomplete, internal authoring.
+ • Reviewed for learning — explanations and examples checked.
+ • Calculation verified — computational result tested against trusted benchmarks and/or independent calculation.
+ • Code reviewed — standard name, edition, jurisdiction and clause references checked.
+ • Needs recheck — source changed, edition superseded or issue reported.
+ A label must state exactly what was reviewed. “Verified” alone is too vague.
+5. Structural engineering domain map
+The following is a product coverage map and a suggested curriculum. It is not a claim that the current app already
+contains these topics.
+5.1 Mathematical and engineering foundations
+ • SI units, dimensions, significant figures and unit conversion
+ • Algebra, trigonometry, vectors and coordinate systems
+ • Calculus, derivatives, integrals and differential equations
+ • Linear algebra: matrices, eigenvalues, eigenvectors and systems of equations
+ • Probability, statistics and basic uncertainty
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+7
+• Engineering drawing, geometry and idealisation
+ 
+5.2 Statics and mechanics of materials
+ • Forces, moments, couples and equilibrium
+ • Free-body diagrams and support reactions
+ • Centroids, area moments of inertia and section properties
+ • Axial load, shear force, bending moment and torsion
+ • Normal and shear stress; strain; constitutive models
+ • Elasticity, plasticity, yielding, fracture and fatigue fundamentals
+ • Mohr’s circle and combined stress
+ • Beam curvature, deflection and energy methods
+ • Column stability, Euler buckling and limitations of ideal formulas
+ • Shear flow, thin-walled behaviour and stress concentrations
+ • Temperature, shrinkage, creep and time-dependent response
+ 
+5.3 Structural analysis
+ • Determinate and indeterminate systems
+ • SFD/BMD, trusses, beams and frames
+ • Compatibility and force/flexibility methods
+ • Slope-deflection and moment distribution as learning methods
+ • Matrix stiffness method
+ • Direct stiffness assembly and boundary conditions
+ • Influence lines and moving loads
+ • Linear static analysis and load cases/combination concepts
+ • Geometric nonlinearity, P-Delta and second-order response
+ • Material nonlinearity and plastic mechanisms
+ • Modal analysis, natural periods and mode shapes
+ • Response spectrum and time-history concepts
+ • Model validation, sensitivity, mesh/convergence and result interpretation
+ 
+5.4 Structural elements and systems
+ • Beams, columns, slabs, walls and diaphragms
+ • Trusses, arches, cables, frames and grids
+ • Braced frames, moment frames, shear walls and cores
+ • Transfer structures, outriggers, tube systems and tall-building concepts
+ • Connections, joints, supports and restraints
+ • Composite and hybrid systems
+ • Load path, redundancy, robustness and disproportionate collapse concepts
+ • Serviceability: deflection, drift, vibration, cracking and movement
+ 
+5.5 Materials and material-specific design
+Reinforced/prestressed concrete: material behaviour; flexure; shear; torsion; anchorage; development and splicing;
+bond; serviceability; durability; confinement; joints; slabs; walls; foundations; precast and prestressed systems; detailing
+and construction sequence.
+Structural steel: tension/compression/flexure; local and global buckling; lateral-torsional buckling; stability bracing;
+combined actions; bolted/welded connections; base plates; fatigue and fracture; composite members; fire and
+fabrication/erection.
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+8
+Timber: orthotropic behaviour, moisture, connections, member stability, fire, durability and code-specific design.
+Masonry: load-bearing and reinforced masonry, out-of-plane actions, diaphragms, seismic behaviour and detailing.
+Other/advanced materials: aluminium, glass systems, fibre-reinforced polymers, high-performance concrete, advanced
+composites and material sustainability—prioritised only when they serve user needs.
+5.6 Loads, hazards and combinations
+ • Self-weight and dead loads
+ • Occupancy/live loads
+ • Wind, snow, rain and ice where relevant
+ • Earthquake actions and seismic mass
+ • Soil, hydrostatic and groundwater pressure
+ • Temperature, shrinkage, creep and imposed movement
+ • Impact, vibration, fatigue, moving loads and construction stages
+ • Fire and accidental actions
+ • Load combinations, limit states, probability and reliability
+ • Load path, torsion/irregularity, diaphragm transfer and foundation reactions
+ Do not hard-code one universal list of load combinations: combinations depend on the governing standard, edition,
+building type, hazard, limit state and jurisdiction.
+5.7 Earthquake and wind engineering
+Earthquake: seismic hazard and site effects; response spectra; ductility and detailing; structural regularity; torsion; drift;
+diaphragm action; capacity design; dynamic analysis; performance-based assessment; liquefaction and soil–structure
+interaction interface; existing-building evaluation, retrofit and resilience.
+Wind: pressure and exposure; internal/external pressure; gust response; along/across-wind response where relevant;
+tall-building dynamics; serviceability acceleration; wind tunnel/CFD awareness; cladding vs primary structure
+distinction.
+5.8 Geotechnical and foundation interface
+ • Soil properties and investigation inputs
+ • Bearing resistance and settlement
+ • Isolated, strip, combined and raft footings
+ • Piles and pile groups
+ • Retaining structures and earth pressure
+ • Basement/uplift, groundwater and slope interaction
+ • Foundation stiffness, differential settlement and soil–structure interaction
+ StructIQ should teach what structural calculations require from geotechnical reports, but it must not invent soil
+parameters or replace a site investigation.
+5.9 FEM and computational structural engineering
+ • Discretisation and degrees of freedom
+ • Element types, shape functions and interpolation
+ • Element stiffness, coordinate transformations and assembly
+ • Boundary conditions, constraints and load application
+ • Numerical conditioning and solver tolerance
+ • Mesh sensitivity and convergence studies
+ • Shell/plate/solid/frame idealisation
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+9
+• Linear and nonlinear analyses
+ • Model verification vs validation
+ • Scripting, batch jobs and reproducibility
+ • Uncertainty, sensitivity and optimisation
+ 
+5.10 Existing structures and professional practice
+ • Inspection and condition assessment
+ • Damage mechanisms and forensic reasoning
+ • Strengthening and retrofit
+ • Construction stages, temporary works and stability during erection
+ • Shop/structural drawings, coordination and BIM
+ • Specifications, submittals, QA/QC, testing and inspection
+ • Peer review and independent checking
+ • Design basis, assumptions register, calculation packages and revision history
+ • Sustainability, embodied carbon, adaptability, resilience and whole-life considerations
+ 
+6. Codes and standards strategy: global, modular,
+jurisdiction-aware
+The platform should separate universal mechanics from local code rules. A code module needs metadata and change
+control, not copied snippets of uncertain provenance.
+6.1 Initial code-family map
+ • Nepal: the Department of Urban Development and Building Construction official page currently lists, among others,
+ NBC 105:2025 seismic design, NBC 104 wind load, NBC 103 occupancy load, NBC 110 plain and reinforced concrete,
+NBC 111 steel, and multiple other NBC documents. Confirm exact adopted edition and legal applicability for each
+deployment/jurisdiction. [R2]
+• United States: ASCE/SEI 7-22 is identified by ASCE as the current edition on its standards page for minimum design
+ loads and associated criteria; AISC 360-22 is the steel specification listed on AISC's current-standard page; ACI
+CODE-318-25 is the current ACI concrete code offering on ACI's official page. Confirm adoption, errata and local
+amendments before using them in a workflow. [R3–R5]
+• Europe: Eurocodes provide a harmonised family of structural design standards. The European Commission's page
+ describes the second-generation Eurocodes timeline: final official language texts to National Standards Bodies by no
+later than 30 March 2026, publication deadline 30 September 2027 and withdrawal deadline for first-generation parts
+30 March 2028. Track national annexes and national implementation. [R6]
+• Global reliability principles: ISO 2394:2015, General principles on reliability for structures, was reviewed and confirmed
+ in 2026 as current on the ISO page when checked. It provides a risk/reliability-informed basis for design and
+assessment. [R7]
+• Australia/New Zealand, UK, India and other markets: include only after edition, adoption, national annex/amendment
+ and legal status are verified from the appropriate official body. Do not infer currency solely from a secondary website.
+6.2 Code record model
+Each coded rule should include:
+ • Country/jurisdiction and authority
+ • Standard identifier and full title
+ • Edition/year, amendments and errata date
+ • Status (published, adopted, superseded, draft, under review)
+ • Scope and exclusions
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+10
+• Clause/table/figure reference
+ • Units and notation
+ • Inputs, prerequisites and applicability tests
+ • Exact interpretation and source pointer
+ • Reviewer and last-verified date
+ • Change log and impact analysis
+ Never copy large copyrighted code passages into the product without permission. Prefer accurate paraphrase,
+metadata and references, and use authorized licensed access where full-text functionality is needed.
+6.3 Code-comparison feature
+Comparison should explain differences in approach—not blindly line up numbers from non-equivalent editions. A
+comparison record should show the same design situation, system/material, limit state, units, assumptions and
+referenced editions. Flag non-comparable items and tell the user when a qualified engineer must interpret the
+difference.
+7. Calculators and interactive visualisations
+7.1 Recommended first calculators
+Begin with educational tools that can be independently checked and have clear assumptions:
+ 1. Unit conversion with dimensional checks.
+ 2. Section-property calculator for common idealised shapes.
+ 3. 2D equilibrium/support reaction tool for simple statically determinate cases.
+ 4. Simply supported beam with a small verified set of load cases; show reactions, SFD, BMD and deflection under
+ declared assumptions.
+5. Axial deformation and elastic stress examples.
+ 6. Euler buckling calculator, clearly limited to ideal elastic columns with defined end conditions and slenderness
+ assumptions.
+Later: trusses, frame stiffness method, influence lines, RC/steel section design, slab actions, foundation sizing and
+dynamic response. Each requires separate validation and standard-specific handling as appropriate.
+7.2 Calculator result contract
+Every calculation must display:
+ • Input values, units and validation messages
+ • Sign convention and coordinate axis
+ • Assumptions and boundary conditions
+ • Governing equations and variable definitions
+ • Intermediate steps, not only the final result
+ • Results with units and sensible precision
+ • Checks or balance residuals (e.g., equilibrium)
+ • Scope limitations and known exclusions
+ • Reference/verification method and version number
+ • Exportable calculation record and reproducibility metadata
+ 
+7.3 Visualisations
+Priority set:
+ • Free-body diagrams and support symbols
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+11
+• Beam shear/moment/deflection diagrams
+ • Stress/strain distribution
+ • Column buckling mode
+ • Truss force colouring
+ • Frame drift and lateral load path
+ • Slab-to-beam load distribution
+ • Foundation pressure distribution (with stated idealisation)
+ • Modal shapes and response plots
+ • FE mesh, supports, load vectors and deformed shape
+ Make visualisations honest. Use exaggerated deformation only if explicitly labelled as not to scale. Do not confuse a
+conceptual animated load path with a solver result.
+8. Mentor: a domain-aware tutor, not just a chat
+window
+The Mentor should guide understanding, adapt to the learner's level, and use the knowledge database as a controlled
+source.
+8.1 Recommended response structure
+For an engineering question, answer in layers:
+ 1. Direct answer
+ 2. Physical intuition
+ 3. Sketch/diagram when useful
+ 4. Equations and symbol definitions
+ 5. Assumptions and units
+ 6. Worked example if appropriate
+ 7. Interpretation and practical relevance
+ 8. Common misconceptions/failure mechanisms
+ 9. Related concepts and suggested next question
+ 10. References and review status
+ 
+8.2 Safety and reliability behaviour
+ • State uncertainty and missing inputs; do not fabricate code clauses or source citations.
+ • Distinguish educational examples from project-specific professional design.
+ • Ask for missing parameters in calculation workflows rather than silently assume them.
+ • Never imply a concept-only rule is universally applicable.
+ • For code-sensitive decisions, identify jurisdiction, edition and applicability.
+ • For high-consequence design, require licensed professional review and independent verification.
+ • Log the model/system version and source versions for calculation-related output.
+ 
+8.3 Future learning features
+ • Learner level and prerequisite-aware recommendations
+ • Worked example → guided hint → independent exercise → feedback
+ • Misconception diagnostics
+ • Concept maps and mastery map
+ • Saved notes, bookmarks and progress sync
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+12
+• Educator-curated pathways
+ • Case-based learning and oral exam/viva practice
+ 
+9. Search and discovery
+Start with reliable local search over title, aliases, summary, category, keywords and related IDs. Add ranked search over
+equations/symbols, material/system types and synonyms. Later add semantic search, but preserve citation/source
+provenance and avoid returning a language-model answer without traceable support.
+Search result should show why it matches, the subject level, source/review state and links to prerequisites. Provide
+spelling/symbol aliases such as “BMD,” “bending moment diagram,” “M diagram” only when those aliases are vetted.
+10. Technical architecture recommendation
+Keep the initial stack lean. Do not introduce a backend, router or state-management library without an actual need;
+likewise, do not keep growing a monolithic main.jsx.
+10.1 Suggested logical structure
+ src/
+  app/                 # app shell, routing and error handling
+  pages/               # Home, Knowledge, Mentor, Learn, Analysis
+  components/          # shared navigation, layout, buttons, diagrams
+  features/
+    knowledge/          # search, taxonomy, concept detail
+    mentor/             # tutor UI, prompts and source display
+    learning/           # paths, lessons, progress
+    calculators/        # UI wrappers for validated calculation modules
+    visualization/      # diagram rendering and interaction
+    standards/          # code metadata, edition status and references
+  data/
+    concepts/           # curated concept records
+    pathways/           # curriculum sequence
+    sources/            # source registry and review metadata
+  domain/              # units, types, validation rules and domain models
+  calculations/        # pure calculation functions + tests
+  services/            # storage, search, API/AI gateway when needed
+  styles/              # tokens, typography, components, page styles
+  tests/               # unit, integration and visual regression tests
+This is a target structure, not a demand to move every file immediately. Refactor incrementally and keep
+IDs/relationships stable.
+10.2 Technology layers
+ • Frontend: existing React/Vite is suitable for the prototype; use accessible semantic components and a consistent token
+ system.
+• Numerical kernels: start with deterministic pure functions in JavaScript/TypeScript for simple validated mechanics
+ tools; consider Python with NumPy/SciPy for server-side numerical features later. NumPy's official documentation
+describes its array, linear algebra and numerical foundations. [R8]
+• Research-grade solver integration: OpenSees is a framework for simulation of structural/geotechnical systems and
+ dynamic response, with public user/developer docs. Treat integration as a later specialist task, not a quick substitute
+for a validated solver. [R9]
+• Visualization: start with SVG/canvas for conceptual diagrams and simple plots; choose 3D/FE visualisation libraries
+ only after representative data/interaction is defined.
+• Persistence: local storage is adequate for early preferences; use a database and authenticated API once accounts,
+ multi-device progress, saved models or collaboration are real requirements.
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+13
+• AI integration: use a server-side provider abstraction, secret management, source retrieval and usage controls. Do not
+ put secret keys in client-side React bundles.
+• Deployment: maintain a clean Git workflow; commit source and lockfiles, ignore node_modules/, dist/, build caches
+ and secrets. Deployment should build from the repository and report a known-good commit.
+11. Quality assurance and validation
+11.1 Software QA
+ • Unit test calculation functions and unit conversion.
+ • Integration test navigation, search, concept selection and mentor workflows.
+ • Test route refresh/deep links on the chosen host.
+ • Test responsive sizes, keyboard-only navigation, focus states and reduced motion.
+ • Run production build in CI on every pull request.
+ • Keep dependency updates reproducible via lockfile.
+ • Use error boundaries and meaningful empty/error states.
+ • Track performance budget for initial load, diagram rendering and large knowledge datasets.
+ 
+11.2 Engineering verification
+For each calculator:
+ 1. Specify exact scope and assumptions.
+ 2. Derive/document equations.
+ 3. Build test cases manually from textbook/official references or benchmark examples.
+ 4. Compare independent implementations where feasible.
+ 5. Test units, signs, limiting cases and equilibrium/energy residuals.
+ 6. Test invalid, extreme and missing inputs.
+ 7. Record expected numeric tolerance.
+ 8. Require engineering review before release.
+ 9. Version the code and tests.
+ 10. Re-run regression cases after every change.
+ For FEM/advanced results, add mesh convergence, boundary-condition checks, equilibrium and model
+sensitivity/verification tests. Do not call agreement with one software package proof of correctness by itself.
+11.3 Security and privacy
+OWASP ASVS 5.0.0 is a useful framework for specifying and testing web application security controls. [R10] Apply
+proportionate controls for authentication, authorisation, session handling, input validation, dependency risk, secure
+secrets, logs and backups before adding user/project data. Do not store personal project files without clear retention
+and access rules.
+12. Delivery roadmap and priorities
+Phase 0 — Stabilise the prototype
+Goal: establish a reliable baseline before expanding.
+Deliverables:
+ • Repository audit and architecture map
+ • Working build and smoke tests
+ • .gitignore and clean dependency practices
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+14
+• Baseline commit/tag and backup
+ • Known issues list
+ • Confirmed routes and existing function inventory
+ Acceptance: clean production build, core current flows tested, no tracked node_modules/ or build output.
+Phase 1 — Homepage and product architecture
+Deliverables:
+ • Professional home page with real engineering visual
+ • Clean application navigation and routing
+ • Existing Knowledge and Mentor preserved
+ • Global design tokens and responsive layout
+ • Connected entry links using actual concept IDs
+ • No placeholder links masquerading as finished features
+ Acceptance: / is the homepage; Knowledge/Mentor function; reload/back/forward work; responsive and accessibility
+checks pass.
+Phase 2 — Knowledge content foundation
+Deliverables:
+ • Stable concept schema
+ • Searchable taxonomy and prerequisite/related graph
+ • Content authoring/review guide
+ • Sources and editorial review status
+ • Expand Beam/Column/Slab/Foundation and core mechanics content
+ Acceptance: content cards/detail views are data-driven, relationships resolve, source/review status is visible, schema
+validation runs in CI.
+Phase 3 — Learning paths and worked examples
+Deliverables:
+ • Beginner → intermediate → advanced paths
+ • Worked examples with units and assumptions
+ • Practice questions and explanation feedback
+ • Search refinements and concept cross-links
+ Acceptance: a learner can complete one pathway from prerequisite to assessment and see relevant related concepts.
+Phase 4 — Verified educational calculators
+Deliverables:
+ • Unit conversions and section properties
+ • Selected determinate-beam reactions/SFD/BMD/deflection cases
+ • Equation steps and diagrams
+ • Input validation, numerical test cases and limitations
+ Acceptance: all calculations have documented scope, benchmark tests, unit/sign tests, reproducible results and an
+engineering review record.
+Phase 5 — Loads, materials, codes and design workflows
+Deliverables:
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+15
+• Load/hazard learning system
+ • Code metadata and edition/jurisdiction registry
+ • One carefully scoped design workflow (e.g., illustrative RC beam or steel member) with independent checks
+ • References and change tracking
+ Acceptance: code-specific content uses verified editions, clauses and applicability; no fake universal code rules.
+Phase 6 — Advanced analysis and professional workflows
+Deliverables:
+ • Matrix analysis, truss/frame methods and more advanced response tools
+ • Import/export and structured result interpretation
+ • Optional integration with specialist solvers/software as permitted
+ • Model/result reports and review checklists
+ Acceptance: stated model assumptions, validation benchmarks, solver/version provenance and qualified review for
+high-consequence uses.
+Phase 7 — Personalization, collaboration and research
+Possible later features:
+ • User accounts and cross-device progress
+ • Project workspaces and annotated calculations
+ • Educator/reviewer content tooling
+ • Versioned case study library
+ • Collaborative review and approval states
+ • Research notebook and reproducible computation
+ • Offline/PWA capability where useful; MDN notes that offline experiences require deliberate service-worker/cache
+ design and accessible cross-device interaction. [R11]
+Do not begin Phase 7 until data governance, accounts, storage and security are designed.
+13. Feature opportunity matrix
+ Opportunit
+y
+User value
+Complexity/risk
+Recommended timing
+Concept
+graph with
+prerequisit
+es
+High
+Low–medium
+Phase 2
+Verified
+interactive
+beam tool
+High
+Medium
+Phase 4
+FBD/SFD/
+BMD/defl
+ection
+visuals
+High
+Medium
+Phase 4
+Source-aw
+are mentor
+High
+Medium–high
+Phase 2–3 basic; AI later
+Code
+edition tra
+cker/errata
+reminders
+High
+Medium
+Phase 5
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+16
+Opportunit
+y
+User value
+Complexity/risk
+Recommended timing
+Cross-cod
+e comparis
+on
+High
+High: apples-to-apples validity and licensing
+Phase 5+
+Engineerin
+g software
+guides
+Medium–high
+Low–medium
+Phase 2–3
+Case studi
+es/failure
+learning
+High
+Medium; requires quality sources
+Phase 3–5
+FE mesh/r
+esults
+visualiser
+High for advanced users
+High
+Phase 6
+Project upl
+oad/result
+import
+High potential
+High: format diversity, privacy, validation
+Phase 6–7
+Automated
+design
+report
+High potential
+Very high safety/liability exposure
+Late phase, only after validation
+governance
+Collaborati
+ve review/
+workspace
+s
+Medium–high
+High: auth, permissions, audit
+Phase 7
+Offline/P
+WA
+Medium
+Medium
+After core UX stabilises
+Learning
+mastery
+tracking
+Medium–high
+Medium: data/privacy and instructional design
+Phase 3/7
+Sustainabili
+ty/whole-li
+fe compari
+son
+Increasing relevance
+Medium–high: data source harmonisation
+Later module
+BIM intero
+perability
+High for professional
+integration
+High: file formats and licensing
+Phase 6–7
+Additional major domains worth planning for
+Besides the areas in the original project brief, explicitly plan for: structural reliability and risk; serviceability/vibration;
+fatigue/fracture; fire resistance; robustness/progressive collapse; construction-stage and temporary stability;
+existing-structure assessment and retrofit; durability/corrosion; structural monitoring/SHM; resilience and
+sustainability; uncertainty/sensitivity; model verification/validation; and engineering documentation/peer review.
+These should be prioritised by user value and authored content quality, not added all at once.
+14. Governance, professional boundaries and
+licensing
+14.1 Safety boundary
+Use three product modes:
+ • Learning mode: simplified examples, clearly identified educational assumptions.
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+17
+• Engineering reference mode: sourced technical material, edition and clause metadata where applicable.
+ • Calculation/design-support mode: only reviewed methods, input checks, traceable calculations, limitations, tests,
+ versioning and professional verification requirements.
+Do not permit the UI to visually imply that an educational calculation is an approved project design. For any real
+project, governing codes, site conditions, client requirements, geotechnical report, special inspections, and local
+licensed-professional obligations must be considered.
+14.2 Editorial governance
+Define roles: author, technical reviewer, code reviewer, release approver. Log content changes and mark changed
+content as “needs recheck” when underlying editions change. Keep a source register and periodically verify links,
+edition status and errata.
+14.3 Intellectual property
+Check code publishers' terms, software API licenses, figure permissions, and third-party content reuse rights. Prefer
+original diagrams and derived explanations with citations. Do not scrape/re-host licensed standards without explicit
+permission.
+15. Key risks and mitigations
+ 1. Scope explosion: use a phased roadmap, not all features at once.
+ 2. False engineering confidence: label assumptions, validation state and intended use.
+ 3. Outdated standards: maintain edition registry, access date, errata and review schedule.
+ 4. Unverified calculators: test against independent benchmarks and require technical review.
+ 5. Generic AI UI: base visuals on meaningful engineering diagrams and content architecture.
+ 6. Monolithic implementation: separate page composition, data, domain logic, tests and styles incrementally.
+ 7. Broken existing features: baseline tests, small commits, regression checks and rollbacks.
+ 8. Data licensing/copyright: maintain permissions and citation records.
+ 9. AI hallucination: ground mentor responses in reviewed content, cite sources, disclose gaps.
+ 10. Project files/privacy: establish retention and access controls before uploads/accounts.
+ 11. Low performance: lazy-load heavy diagrams, keep the initial bundle modest and measure.
+ 12. Code-comparison ambiguity: compare only same scope, limit state, units and edition contexts.
+ 
+16. First 30 / 60 / 90 days
+Days 1–30: make the foundation reliable
+ • Audit app and Git repository.
+ • Stabilise build/deploy.
+ • Fix / vs Knowledge navigation and direct route refresh.
+ • Establish design tokens and homepage visual system.
+ • Inventory concept coverage and source quality.
+ • Define knowledge schema and content review status.
+ • Implement one complete exemplary concept (Beam) with all fields populated and sourced.
+ 
+Days 31–60: establish the knowledge product
+ • Apply schema to Column, Slab and Foundation.
+ • Implement prerequisite/related concept graph.
+ • Improve search and category filtering.
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+18
+• Create first learning path and practice items.
+ • Add a source register and engineering content validation script.
+ • Test responsive/accessibility and collect feedback from a small number of engineering learners.
+ 
+Days 61–90: deliver an educational analysis tool
+ • Build a scoped beam example calculator/visualisation.
+ • Provide free-body diagram, reactions, shear, moment and deflection for supported load/support cases.
+ • Add unit-aware inputs and assumption panel.
+ • Create an independent verification workbook/test fixture set.
+ • Add regression and build checks to CI.
+ • Decide, based on observed usage, whether next priority is mentor integration, more materials, or code metadata.
+ This is a suggested sequencing plan, not a guaranteed delivery estimate; scope depends on available developer time
+and review capacity.
+17. Minimum acceptance checklist for every release
+Product
+ • The release solves a clear user problem.
+ • No placeholder action appears functional when it is not.
+ • Knowledge/related links resolve reliably.
+ • Users can distinguish educational content, code-specific content and planned functionality.
+ 
+Engineering content
+ • Sources and date/status are recorded.
+ • Assumptions, units, scope and limitations are visible.
+ • Equations and worked examples have been technically reviewed.
+ • Code clause/edition is verified where applicable.
+ 
+Software
+ • Production build succeeds.
+ • Automated checks pass.
+ • Core navigation, search and responsive states are smoke-tested.
+ • No secrets or generated dependency folders are committed.
+ • Error/empty/loading states are understandable.
+ 
+UX and accessibility
+ • Keyboard support, focus indicators and readable contrast.
+ • Responsive at desktop/tablet/mobile widths.
+ • Diagrams have text descriptions and avoid motion-only meaning.
+ • Reduced-motion preference is respected.
+ • Content remains understandable without decorative visuals.
+ 
+Safety/release
+ • Risky features are disabled until validation is done.
+ • Reviewer, commit and release notes are recorded.
+ • Rollback path is available.
+ 
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+19
+18. Research method and limitations
+This document combines the user's supplied StructIQ product brief with targeted official-source research about
+structural standards, software and digital-product quality. It does not claim to cover every structural engineering paper,
+standard, jurisdiction or software package on the internet. A complete code-by-code or research-literature review is a
+separate ongoing task.
+Three types of statements are intentionally distinguished:
+ • User brief: desired product goals and proposed topic coverage supplied by the project owner.
+ • Verified reference: a statement tied to an official publisher/standards authority or official technical documentation
+ accessed on 23 October 2026.
+• Recommendation: product architecture, roadmap or feature prioritisation proposed in this report; it should be
+ validated against actual user feedback, budget and developer capacity.
+19. Official reference register
+R1. W3C Web Accessibility Initiative. Web Content Accessibility Guidelines (WCAG) overview. Explains WCAG 2.2
+recommendation status and its relationship to ISO/IEC 40500. Accessed 23 October 2026.
+https://www.w3.org/WAI/standards-guidelines/wcag/
+R2. Department of Urban Development and Building Construction, Government of Nepal. Building Code list. Official
+page listing NBC documents including NBC 105:2025, NBC 104, NBC 103, NBC 110 and NBC 111. Accessed 23
+October 2026. https://dudbc.gov.np/pages/24231978/
+R3. American Society of Civil Engineers (ASCE). ASCE 7 & SEI Standards. Official page identifies ASCE/SEI 7-22 as the
+current edition shown for minimum design loads and associated criteria. Verify adoption and amendments for each
+location. Accessed 23 October 2026. https://www.asce.org/communities/institutes-and-technical-groups/structural-e
+ngineering-institute/asce-7-and-sei-standards
+R4. American Institute of Steel Construction (AISC). Specification for Structural Steel Buildings (ANSI/AISC 360-22).
+Official current-standards page. Accessed 23 October 2026.
+https://www.aisc.org/aisc/publications/current-standards/aisc-360/
+R5. American Concrete Institute (ACI). ACI CODE-318-25: Building Code Requirements for Structural Concrete.
+Official product/code portal describing scope including strength, serviceability, durability, load combinations, analysis,
+deflection, anchorage and detailing. Accessed 23 October 2026.
+https://www.concrete.org/topicsinconcrete/318buildingcodeportal.aspx
+R6. European Commission Joint Research Centre. Second Generation of the Eurocodes. Official transition dates for
+publication/implementation/withdrawal of first-generation parts. Accessed 23 October 2026.
+https://eurocodes.jrc.ec.europa.eu/second-generation-eurocodes
+R7. International Organization for Standardization (ISO). ISO 2394:2015 — General principles on reliability for
+structures. ISO page records the 2015 edition and confirmation as current in 2026 when checked. Accessed 23
+October 2026. https://www.iso.org/standard/58036.html
+R8. NumPy Developers. NumPy documentation. Official documentation for numerical arrays, linear algebra and
+scientific computing foundations. Accessed 23 October 2026. https://numpy.org/doc/stable/
+R9. OpenSees. OpenSees Documentation. Official framework documentation for structural/geotechnical simulation
+and dynamic response, including user and developer resources. Accessed 23 October 2026.
+https://opensees.github.io/OpenSeesDocumentation/
+R10. OWASP Foundation. Application Security Verification Standard (ASVS) 5.0.0. Security requirement framework for
+designing, developing and testing web applications/services; stable release dated 30 May 2025 on official page.
+Accessed 23 October 2026. https://asvs.owasp.org/
+
+STRUCTIQ
+PRODUCT BASELINE / TECHNICAL ROADMAP
+Research snapshot: 23 Oct 2026  |  Verify standards before use
+20
+R11. MDN Web Docs. Progressive web app best practices and Offline/background operation. Practical guidance on
+responsive behaviour, semantics and deliberate offline/service-worker handling. Accessed 23 October 2026.
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Best_practices ;
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation
+R12. Computers and Structures, Inc. (CSI). ETABS. Official product information for integrated building analysis/design,
+supported members, code-based design and results. Accessed 23 October 2026.
+https://www.csiamerica.com/products/etabs
+R13. Computers and Structures, Inc. (CSI). SAP2000. Official product information for general structural analysis/design
+and meshing/result functionality. Accessed 23 October 2026. https://www.csiamerica.com/products/sap2000
+R14. Bentley Systems. STAAD.Pro. Official product information on structural analysis/design, multiple materials,
+static/dynamic load analysis and OpenSTAAD API. Accessed 23 October 2026.
+https://www.bentley.com/products/staad-pro/
+R15. Autodesk. Structural Engineering in Revit documentation. Official documentation topics include structural
+columns, beams, braces, walls, foundations, floors and steel connections. Accessed 23 October 2026. https://help.auto
+desk.com/cloudhelp/2023/ENU/Revit-StructEng/files/GUID-8DBD5510-BB44-48E8-A37F-6D370234E23A.htm
+R16. Federal Emergency Management Agency (FEMA). NEHRP Recommended Seismic Provisions for New Buildings
+and Other Structures, FEMA P-1050-1/2015. An official reference publication; use current jurisdictional documents for
+actual design. Accessed 23 October 2026. https://www.fema.gov/sites/default/files/2020-07/fema_nehrp-seismic-pr
+ovisions-new-buildings_p-1050-1_2015.pdf
+Final recommendation
+Build StructIQ as a verified engineering knowledge product first, not as an all-at-once structural design automation
+system. Protect the current prototype, create an exceptional Knowledge experience, make every topic traceable and
+connected, and release interactive calculations only when their assumptions, test cases and limitations are explicit. The
+long-term opportunity is not simply to host more information; it is to connect concepts, physical behaviour, analysis,
+codes, construction and judgement in a way learners can navigate and engineers can scrutinise.
+
+StructIQ
+ UPDATED PRODUCT BASELINE — CODE LEARNING, COMPARISON, ANALYSIS &
+ DETAILING
+Revision 1  23 October 2026
+Purpose of this addendum
+This revision makes one product pillar explicit and central: StructIQ is not merely a structural-engineering knowledge
+library. It should let a learner take the same engineering problem and study how different structural standards
+approach analysis, design and detailing.
+Core learning loop: Learn the engineering behaviour → analyse the structure → select a code →
+follow that code's design procedure → understand the resulting detailing → switch codes →
+compare what changed and why.
+
+1. The New Core Product Pillar
+The platform should provide a dedicated Code Learning &amp; Comparison system. A user should be able to
+study a structural concept without being forced to memorize isolated clauses, then move naturally from mechanics
+and analysis into code-specific design and detailing.
+The code system should answer five questions for every topic:
+1. What is the engineering problem?
+2. What is physically happening?
+3. How is the problem analysed?
+4. How does each selected code prescribe the design/check?
+5. How does that prescription affect the final detail?
+This preserves the original StructIQ philosophy of teaching engineering reasoning rather than presenting formulas in
+isolation. The supplied product brief already establishes the importance of code-aware design, structural behaviour,
+calculations and detailing; this revision makes their connection an explicit product workflow. ■filecite■turn28file0■
+2. Code-Centred Learning Architecture
+Every major engineering topic should eventually have a reusable content structure rather than a one-off article. The
+same content model can support beams, columns, slabs, foundations, walls, steel members, connections and other
+systems.
+Layer
+What the learner sees
+Purpose
+1. Engineering principle
+Mechanics, behaviour, assumptions
+Build transferable understanding
+2. Analysis
+Loads, actions, reactions, SFD/BMD, deformation, stability
+Connect behaviour to structural response
+3. Code method
+Code-specific equations, limits, factors, procedures
+Learn the standard's approach
+4. Worked example
+Inputs → steps → checks → result
+Make the method concrete
+5. Detailing
+Reinforcement / connection / member detailing
+Connect calculation to drawings and construction
+6. Comparison
+Code A vs B vs C
+Understand differences rather than memorize them
+7. Interpretation
+Why the result differs; assumptions and consequences
+Develop engineering judgement
+3. Example: One RC Beam, Multiple Codes
+The flagship demonstration should be an ordinary reinforced-concrete beam because it naturally connects structural
+behaviour, analysis, design and detailing.
+Step A — Define the problem
+Span, support condition, section geometry, concrete properties, reinforcement properties, loads and design situation.
+Step B — Understand behaviour
+Show load → shear → moment → curvature → deflection. This follows the relationship-based teaching approach
+already defined for StructIQ. ■filecite■turn28file2■
+Step C — Analyse
+Determine reactions and design actions. Visualise shear force, bending moment and relevant serviceability response.
+Step D — Select a standard
+Example: ACI 318. Present the applicable method, assumptions, equations, checks and references. Then repeat for
+IS 456, Eurocode 2 or another supported standard.
+
+Step E — Detail
+Show how the selected design result becomes an actual reinforcement arrangement: bars, spacing, cover,
+anchorage/development, laps where applicable, transverse reinforcement and constructability considerations.
+Step F — Compare
+Switch standards without changing the underlying structural problem. The comparison view should expose the
+reason for differences, not merely display different numbers.
+Important: code values, equations, clauses and limits must be tied to an identified standard edition and verified
+source. The existing brief explicitly requires this discipline. ■filecite■turn28file5■
+
+4. The Comparison Engine
+Code comparison should be a first-class product capability, not a table bolted onto an article.
+A comparison session should allow the learner to choose a structural topic, element, material and standards. StructIQ
+then presents the same engineering problem through multiple code lenses.
+Comparison dimension
+Example
+Scope / applicability
+Which structural situation and material does the provision cover?
+Design philosophy
+How resistance, reliability and limit states are treated
+Loads & combinations
+How actions are factored/combined for the selected design situation
+Analysis assumptions
+Idealisation, redistribution, second-order effects, effective properties
+Strength design
+Flexure, shear, axial, torsion, stability or connection resistance
+Serviceability
+Deflection, cracking, drift, vibration or other limits
+Detailing
+Minimum reinforcement, spacing, anchorage, joints, confinement, connections
+Terminology
+Different names or definitions for equivalent concepts
+Result interpretation
+Why the outputs differ and what that means physically
+The UI should visually distinguish three things: universal engineering principles, code-specific requirements,
+and interpretation / commentary. This follows the original brief's requirement to distinguish universal principles,
+code requirements, assumptions and standard differences. ■filecite■turn28file2■
+5. Detailing as the Final Learning Step
+A major differentiator should be the transition from calculation to a real structural detail. The platform should teach
+that a calculated reinforcement quantity or member size is not the end of design.
+For reinforced concrete, the learning sequence can become:
+Analysis → design action → resistance calculation → required reinforcement → minimum/maximum limits →
+shear → serviceability → anchorage/development → laps/splices → spacing → cover → confinement → final
+detail.
+For steel, the analogous sequence can become:
+Analysis → member actions → section selection → strength checks → stability/buckling → serviceability →
+connection design → detailing → constructability.
+This directly extends the original product brief, which identifies structural detailing, anchorage, development length,
+lap splices, beam-column joints, steel connections and constructability as important future domains.
+■filecite■turn28file5■
+
+6. Recommended Initial Code Matrix
+Do not attempt to digitise every standard simultaneously. Build a controlled code registry so each code can be added,
+versioned, reviewed and eventually compared using the same schema.
+Domain
+Initial candidate families
+Comparison target
+RC design
+IS 456 / ACI 318 / Eurocode 2 / NBC where applicable
+Beam → column → slab → foundation
+Steel design
+IS 800 / AISC 360 / Eurocode 3 / AS standards as prioritised
+Beam → column → connections
+Loads
+IS/NBC loading provisions / ASCE 7 / Eurocode actions / relevant AS standards
+Load definition → combinations
+Seismic
+NBC seismic provisions / IS 1893 / ASCE 7 / Eurocode 8
+Hazard → actions → system → detailing
+Foundations
+Relevant structural + geotechnical provisions
+Bearing → settlement interface → structural design
+The exact supported editions should be maintained in a registry with standard name, edition/year, jurisdiction, status,
+source, verification date, applicable topics and known amendments. Never silently mix editions.
+7. Product Architecture Implication
+This feature changes the data architecture. The knowledge model should separate engineering concepts from code
+provisions. The original brief already recommends separating UI, engineering content, calculations and data rather
+than placing everything in one React file. ■filecite■turn28file8■
+Suggested conceptual model
+Concept → Element → Material → Analysis method → Code family → Code edition → Provision → Design check →
+Detailing rule → Worked example → Comparison mapping
+This allows one concept such as beam shear to be taught once at the mechanics level and then linked to multiple
+code-specific implementations.
+8. Code Content Quality System
+Because standards are authoritative and version-sensitive, every code-backed content item should carry metadata
+such as:
+ Standard and edition
+ Jurisdiction
+ Clause / section reference where permitted and appropriate
+ Source provenance
+ Last verification date
+ Applicability / scope
+ Assumptions
+ Reviewer status
+ Related provisions
+ Educational vs professional-use classification
+The platform should never invent clauses, equations, safety factors, limits or load combinations. The original brief
+makes engineering accuracy a non-negotiable requirement. ■filecite■turn28file5■
+9. Recommended User Journey
+Example: learner wants to understand RC beam flexure
+1. Search “RC beam flexure”
+2. Learn the mechanics and physical behaviour
+
+3. Open the beam analysis example
+4. See moment demand develop from loading
+5. Select ACI / IS / EC2
+6. Follow the code-specific flexural design procedure
+7. Inspect the assumptions and checks
+8. View the resulting reinforcement detail
+9. Switch to another code
+10. Compare the procedures and outcomes
+11. Answer a short conceptual/practical exercise
+12. Save the topic and continue along a structured learning path
+This creates a continuous educational loop rather than disconnected pages.
+
+10. What Makes This Feature Defensible
+A large number of websites can provide formulas, PDFs or code excerpts. StructIQ becomes more differentiated
+when it connects them into a coherent learning system:
+Mechanics → Analysis → Code → Design → Detailing → Comparison → Engineering judgement.
+The comparison layer should therefore not be a simple “which code gives the bigger number?” tool. It should teach
+why a difference exists, whether the compared provisions are genuinely equivalent, what assumptions changed, and
+whether the comparison is valid for the same design situation.
+11. Phased Build Plan
+Phase 1 — Code knowledge foundation
+Create the code registry, metadata schema, concept-to-code links and citation/provenance model. Build a small
+verified set of topics rather than a huge unverified library.
+Phase 2 — Guided code lessons
+Add code-aware learning pages for one material and a few representative members. Start with RC beams because
+they demonstrate the full workflow.
+Phase 3 — Comparison workspace
+Allow two or three standards to be selected side by side. Synchronise the engineering problem while changing only
+the applicable code method.
+Phase 4 — Detailing visualisation
+Render the design outcome as an interactive section/elevation/detail and annotate which code provisions control
+each feature.
+Phase 5 — Verified educational calculators
+Connect calculation engines to the code registry so the calculation, assumptions and source are traceable.
+Phase 6 — Broader international coverage
+Expand systematically into steel, seismic, loads, slabs, columns, foundations and additional jurisdictions.
+Phase 7 — Advanced professional workflows
+Only after validation: deeper model checking, import/export, software integrations, advanced analysis and AI-assisted
+engineering workflows.
+12. Final Product Definition
+ StructIQ is an interactive structural-engineering learning and reference platform where
+users can learn structural behaviour, analyse engineering problems, study how different
+standards prescribe design, compare those approaches, and understand how the resulting
+calculations become real structural detailing.
+This should become a core requirement in future development decisions. New features should strengthen at least
+one link in the chain Learn → Analyse → Code → Design → Detail → Compare rather than simply adding another
+isolated page or tool.
+Relationship to the existing baseline: This is an update to the StructIQ Foundation Roadmap and Research Guide. It retains the
+original product vision—professional engineering UX, structured knowledge, analysis, design, visualization, mentorship, global
+standards, learning progression and engineering accuracy—and makes code learning/comparison and code-to-detail workflows
+explicit as a primary product pillar. ■filecite■turn28file0■
