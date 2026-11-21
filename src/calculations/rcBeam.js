@@ -8,9 +8,9 @@ const sqrtOrNull = (v) => (v < 0 ? null : Math.sqrt(v));
 
 export function validate(i) {
   const errs = [];
-  for (const k of ['span', 'b', 'd', 'fck', 'fy', 'dead', 'live'])
+  for (const k of ['span', 'b', 'd', 'fck', 'fy', 'dead', 'live', 'db', 'cover'])
     if (!(Number.isFinite(i[k]) && i[k] >= 0)) errs.push(`${k} must be a non-negative number`);
-  for (const k of ['span', 'b', 'd', 'fck', 'fy'])
+  for (const k of ['span', 'b', 'd', 'fck', 'fy', 'db'])
     if (!(i[k] > 0)) errs.push(`${k} must be greater than zero`);
   if (i.dead + i.live <= 0) errs.push('Total load must be greater than zero');
   return errs;

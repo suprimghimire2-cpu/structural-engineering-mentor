@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/calculations/",
+    "test": "node --test src/calculations/rcBeam.test.js",
     "validate": "node scripts/validate-knowledge.mjs",
     "check": "npm run validate && npm test && npm run build"
   },

@@ -28,3 +28,9 @@ test('minimum steel governs for tiny load', () => {
   const r = is456({ ...base, dead: 1, live: 1 }); assert.equal(r.AsReq, r.AsMin);
 });
 test('validation catches bad inputs', () => assert.ok(validate({ ...base, b: 0 }).length > 0));
+
+test('validation rejects invalid detailing inputs', () => {
+  const detailing = { ...base, db: 20, cover: 30 };
+  assert.ok(validate({ ...detailing, db: 0 }).some((e) => e.startsWith('db ')));
+  assert.ok(validate({ ...detailing, cover: -1 }).some((e) => e.startsWith('cover ')));
+});
