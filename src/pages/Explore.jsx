@@ -3,7 +3,7 @@ import {
   Search, BookOpen, MessageCircle, ChevronRight,
   Sparkles, ArrowRight, Menu, X,
 } from 'lucide-react';
-import { knowledge, knowledgeById, categories, findKnowledge } from '../data/knowledge';
+import { knowledge, knowledgeById, categories, findKnowledge, getPrerequisites } from '../data/knowledge';
 import '../styles.css';
 
 /* ═══════════════════════════════════════════════════════
@@ -234,14 +234,16 @@ export default function ExploreApp({ initialConcept }) {
                   items={selected.sections.practicalQuestions}
                 />
 
-                <div className="related">
-                  <h3>Related concepts</h3>
-                  <div>
-                    {(selected.sections?.related ?? []).map((r) => (
-                      <RelatedChip key={r} id={r} onChoose={choose} />
-                    ))}
-                  </div>
-                </div>
+                <RelationshipGroup
+                  title="Prerequisites"
+                  ids={getPrerequisites(selected.id)}
+                  onChoose={choose}
+                />
+                <RelationshipGroup
+                  title="Related concepts"
+                  ids={selected.sections?.related ?? []}
+                  onChoose={choose}
+                />
               </aside>
             )}
           </section>
@@ -347,6 +349,24 @@ function RelatedChip({ id, onChoose }) {
     <button type="button" onClick={() => onChoose(k)}>
       {k.title}
     </button>
+  );
+}
+
+function RelationshipGroup({ title, ids, onChoose }) {
+  const concepts = [...new Set(ids)]
+    .map((id) => knowledgeById.get(id))
+    .filter(Boolean);
+  if (!concepts.length) return null;
+
+  return (
+    <div className="related">
+      <h3>{title}</h3>
+      <div>
+        {concepts.map((concept) => (
+          <RelatedChip key={concept.id} id={concept.id} onChoose={onChoose} />
+        ))}
+      </div>
+    </div>
   );
 }
 
