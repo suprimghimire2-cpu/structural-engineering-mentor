@@ -24,13 +24,19 @@ export default function ExploreApp({ initialConcept }) {
   const [messages, setMessages] = useState([]);
   const detailRef = useRef(null);
 
-  const filtered = useMemo(() => knowledge.filter(
-    (k) =>
-      (category === 'All' || k.category === category) &&
-      (!query ||
-        k.title.toLowerCase().includes(query.toLowerCase()) ||
-        k.summary.toLowerCase().includes(query.toLowerCase()))
-  ), [query, category]);
+  const filtered = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    const idTerm = term.replaceAll(' ', '-');
+    return knowledge.filter(
+      (k) =>
+        (category === 'All' || k.category === category) &&
+        (!term ||
+          k.title.toLowerCase().includes(term) ||
+          k.summary.toLowerCase().includes(term) ||
+          k.category.toLowerCase().includes(term) ||
+          k.id.includes(idTerm))
+    );
+  }, [query, category]);
 
   const choose = (k) => {
     setSelected(k);
