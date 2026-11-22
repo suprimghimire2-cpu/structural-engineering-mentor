@@ -22,8 +22,9 @@ Knowledge lives in `src/data/knowledge.js` (54 concepts). Calculations live in `
 ## 2. Existing working features
 
 - Production build succeeds (`npm run build`, Vite 8.3.5).
+- `npm test` runs `src/calculations/rcBeam.test.js`. After rebase onto current `main`, 11/11 passed.
 - Knowledge validation succeeds: 54 concepts, required sections present, every related id resolves (`npm run validate`).
-- RC beam unit tests pass when the test file is run directly: 10/10 (`node --test src/calculations/rcBeam.test.js`).
+- GitHub Actions (`.github/workflows/quality-checks.yml`) runs validate, test and build on pull requests and pushes to `main`.
 - Home: engineering drawing, domain list, element table linked by real ids (`beam`, `column`, `slab`, `shear-wall`, `foundation`, `diaphragm`, `load-path`). Planned items have no fake links.
 - Explore: category filter, title/summary search, data-driven detail (definition through failure, questions, related chips), keyword mentor.
 - Codes: one simply supported RC beam compared across ACI 318, IS 456:2000 and Eurocode 2. Shows steps, a schematic section, a parabolic moment sketch, and an explicit “educational / not reviewed / not for design” notice.
@@ -31,9 +32,9 @@ Knowledge lives in `src/data/knowledge.js` (54 concepts). Calculations live in `
 
 ## 3. Incomplete features
 
-- Search uses title and summary only. `searchKnowledge`, `getPrerequisites` and `getUnlockedBy` exist in data and are unused in the UI.
+- Library search matches title, summary, category and id. Ranked `searchKnowledge` and `getUnlockedBy` still exist in data and are unused. Prerequisite chains are shown on the detail panel.
 - Mentor returns one concept blurb. It does not use code, analysis results, or skill level.
-- Code page covers flexure of one beam. No shear, deflection, cracking, anchorage, code registry, edition metadata, or reviewer record.
+- Code page covers flexure of one beam. Bar diameter and cover are validated. No shear, deflection, cracking, anchorage workflow, code registry, edition metadata, or reviewer record.
 - Bar layout and moment diagram are teaching sketches, not a detailing or analysis engine.
 - Homepage “Codes & Standards” is still marked planned even though `#/codes` exists.
 - Explore and the rest of the app do not share one navigation component.
@@ -45,12 +46,10 @@ Knowledge lives in `src/data/knowledge.js` (54 concepts). Calculations live in `
 - Code registry, jurisdiction/edition tracking, citation metadata, NBC and other families (Phase 5 and code-addendum Phase 1).
 - Matrix analysis, software import, result normalisation (Phase 6).
 - Cross-device accounts, project workspaces, collaboration, PWA (Phase 7).
-- CI workflow. `npm run check` is defined but not run in GitHub Actions.
 - Content authoring guide and visible source/review status on concepts.
 
 ## 5. Bugs and technical risks
 
-- **`npm test` fails.** Script is `node --test src/calculations/`. On Node 24 that path is treated as a module and throws `MODULE_NOT_FOUND`. The tests themselves pass.
 - **Mentor links use two hashes** (`#/explore#mentor` in `Nav.jsx` and `Home.jsx`). The browser keeps one hash, so the Mentor section is not a reliable target.
 - **Login wall.** Unauthenticated visitors never see the homepage. Roadmap acceptance says `/` is the product homepage.
 - **Calculator status.** Tests check internal equilibrium of the same formulas. They are not independent textbook or code-clause benchmarks. The UI already says clauses are not independently reviewed. Do not call this verified.
@@ -67,11 +66,11 @@ Knowledge lives in `src/data/knowledge.js` (54 concepts). Calculations live in `
 
 | Phase | Status | What exists | What remains |
 |---|---|---|---|
-| 0 Prototype stabilisation | PARTIALLY COMPLETED | Build, `.gitignore`, knowledge validator, this audit | Fix `npm test` / `npm run check`; known-issues list was missing until this file; no baseline tag |
+| 0 Prototype stabilisation | PARTIALLY COMPLETED | Build, `.gitignore`, validator, `npm test`, CI on `main`, this audit | No baseline tag. This file is the known-issues list |
 | 1 Homepage and architecture | PARTIALLY COMPLETED | Home, tokens, routing, real concept links, Knowledge and Mentor still work | Public homepage without login; one nav; fix Mentor hash; accessibility check not done |
-| 2 Knowledge foundation | PARTIALLY COMPLETED | 54-concept schema, related graph, detail UI, validator | Prerequisites unused in UI; search is shallow; no sources/review status; validator not in CI; no authoring guide |
+| 2 Knowledge foundation | PARTIALLY COMPLETED | 54-concept schema, related graph, prerequisite list on the detail panel, validator in CI | Ranked search unused; no sources/review status; no authoring guide |
 | 3 Learning paths and examples | NOT STARTED | Static path labels on the homepage only | A path a learner can finish, practice, and feedback |
-| 4 Verified educational calculators | PARTIALLY COMPLETED | One RC flexure module with self-checks and limitations text | Unit conversion, section properties, beam SFD/BMD/deflection, independent benchmarks, engineering review record |
+| 4 Verified educational calculators | PARTIALLY COMPLETED | One RC flexure module, input checks including bar size/cover, self-checks, limitations text | Unit conversion, section properties, beam SFD/BMD/deflection, independent benchmarks, engineering review record |
 | 5 Loads, materials, codes, design | PARTIALLY COMPLETED | One scoped RC beam comparison with paraphrased refs | Registry, verified editions/clauses, loads system, full workflow beyond flexure |
 | 6 Advanced analysis | NOT STARTED | — | Matrix methods, import/export, interpretation layer |
 | 7 Personalisation and research | NOT STARTED | Local-only login prototype, which the roadmap says not to expand yet | Real accounts, workspaces, governance |
@@ -90,19 +89,18 @@ Knowledge lives in `src/data/knowledge.js` (54 concepts). Calculations live in `
 
 ## 7. Recommended implementation order
 
-1. Make `npm test` and `npm run check` pass (close Phase 0).
-2. Fix Mentor navigation and decide whether Home is public (close Phase 1).
-3. Surface prerequisites and ranked search already in `knowledge.js` (Phase 2). No new content dump.
-4. One beginner path using existing concept ids (Phase 3).
-5. Only then add a determinate-beam educational calculator with benchmarks separate from the code-design page (Phase 4).
-6. Keep the RC comparison, but add a small code-metadata record before adding clauses (Phase 5 / addendum Phase 1).
+1. Fix Mentor navigation and decide whether Home is public (close Phase 1). Phase 0 checks already run in CI.
+2. Use the existing ranked search in the library (Phase 2). Prerequisites are already shown. No new content dump.
+3. One beginner path using existing concept ids (Phase 3).
+4. Only then add a determinate-beam educational calculator with benchmarks separate from the code-design page (Phase 4).
+5. Keep the RC comparison, but add a small code-metadata record before adding clauses (Phase 5 / addendum Phase 1).
 
 Do not rebuild Home, Explore, or the beam calculator. Do not add accounts, AI, or more codes in the next task.
 
 ## 8. Highest-priority next task
 
-**Fix the test script so `npm test` runs `src/calculations/rcBeam.test.js`, then confirm `npm run check`.**
+**Fix Mentor navigation so “Mentor” opens the mentor section.**
 
-Phase 0 acceptance requires a working check of current behaviour. The suite already passes; the npm script does not.
+`Nav.jsx` and `Home.jsx` use `#/explore#mentor`. A URL has one hash, so that link does not target `id="mentor"`.
 
-**Files:** `package.json` only.
+**Files:** `src/components/Nav.jsx`, `src/pages/Home.jsx`, and `src/pages/Explore.jsx` only if the page must scroll to `#mentor` after the route loads.
