@@ -1,4 +1,6 @@
 import { knowledge } from '../src/data/knowledge.js';
+import { sources } from '../src/data/sources.js';
+import { validateSources } from '../src/data/sourceValidation.js';
 
 const REQUIRED = ['definition','physical','behaviour','loadPath','equation','analysis',
   'resultInterpretation','practice','designThinking','construction','failureReasoning','related'];
@@ -6,6 +8,7 @@ const ids = new Set(knowledge.map((k) => k.id));
 const errors = [], warnings = [];
 
 if (ids.size !== knowledge.length) errors.push('Duplicate concept ids');
+errors.push(...validateSources(sources, knowledge));
 for (const k of knowledge) {
   for (const f of REQUIRED) if (!k.sections?.[f]) errors.push(k.id + ': missing "' + f + '"');
   for (const r of k.sections?.related ?? [])
