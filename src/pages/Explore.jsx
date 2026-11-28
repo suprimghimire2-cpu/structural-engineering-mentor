@@ -4,6 +4,7 @@ import {
   Sparkles, ArrowRight, Menu, X,
 } from 'lucide-react';
 import { knowledge, knowledgeById, categories, findKnowledge, getPrerequisites } from '../data/knowledge';
+import SourceReviewPanel from '../components/SourceReviewPanel.jsx';
 import '../styles.css';
 
 /* ═══════════════════════════════════════════════════════
@@ -233,6 +234,8 @@ export default function ExploreApp({ initialConcept }) {
                   label="Practical engineering questions"
                   items={selected.sections.practicalQuestions}
                 />
+
+                <SourceReviewPanel concept={selected} />
 
                 <RelationshipGroup
                   title="Prerequisites"

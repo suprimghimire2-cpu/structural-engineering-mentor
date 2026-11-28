@@ -1,6 +1,7 @@
 import { knowledge } from '../src/data/knowledge.js';
 import { sources } from '../src/data/sources.js';
 import { validateSources } from '../src/data/sourceValidation.js';
+import { validateEditorialReview } from '../src/data/editorialReview.js';
 
 const REQUIRED = ['definition','physical','behaviour','loadPath','equation','analysis',
   'resultInterpretation','practice','designThinking','construction','failureReasoning','related'];
@@ -10,6 +11,7 @@ const errors = [], warnings = [];
 if (ids.size !== knowledge.length) errors.push('Duplicate concept ids');
 errors.push(...validateSources(sources, knowledge));
 for (const k of knowledge) {
+  errors.push(...validateEditorialReview(k.editorialReview, k.id));
   for (const f of REQUIRED) if (!k.sections?.[f]) errors.push(k.id + ': missing "' + f + '"');
   for (const r of k.sections?.related ?? [])
     if (!ids.has(r)) warnings.push(k.id + ': related "' + r + '" has no entry yet');
