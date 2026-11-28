@@ -435,11 +435,12 @@ function HomeFooter() {
 
 function ProductExperiences() {
   return <section className="h-section h-experiences" aria-labelledby="experiences-title"><div className="h-section__inner">
-    <div className="h-section__lede"><p className="h-label">THREE WAYS TO WORK</p><h2 id="experiences-title">A connected engineering workspace.</h2><p className="h-experiences__intro">Move from understanding a concept to examining a calculation, with the limits of each tool made clear.</p></div>
+    <div className="h-section__lede"><p className="h-label">FOUR WAYS TO WORK</p><h2 id="experiences-title">A connected engineering workspace.</h2><p className="h-experiences__intro">Move from understanding a concept to examining a calculation, with the limits of each tool made clear.</p></div>
     <div className="h-experience-list">
       <article className="h-experience h-experience--knowledge"><span className="h-experience__index">01 / LIBRARY</span><div><h3>Knowledge Explorer</h3><p>Search structural concepts, follow prerequisites and related ideas, and read explanations through behaviour, load path and failure.</p><a href="#/explore">Enter the library <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">K</span></article>
       <article className="h-experience h-experience--mentor"><span className="h-experience__index">02 / PROTOTYPE</span><div><h3>Engineering Mentor</h3><p>Ask a question and explore the best-matching concept with a local, concept-based response prototype.</p><a href="#/explore#mentor">Open Mentor <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">M</span></article>
       <article className="h-experience h-experience--codes"><span className="h-experience__index">03 / WORKBENCH</span><div><h3>Code Learning</h3><p>Compare the current RC beam flexural example under ACI 318, IS 456 and Eurocode 2 using shared inputs.</p><a href="#/codes">Open the workbench <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">C</span></article>
+      <article className="h-experience h-experience--studio"><span className="h-experience__index">04 / ANALYSIS</span><div><h3>Analysis Studio</h3><p>Build a simply supported beam or 2D pin-jointed truss model and inspect computed forces, reactions and verification residuals.</p><a href="#/studio">Open Analysis Studio <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">A</span></article>
     </div>
   </div></section>;
 }
