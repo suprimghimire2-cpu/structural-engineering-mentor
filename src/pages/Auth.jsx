@@ -153,23 +153,24 @@ export default function Auth() {
   };
 
   return (
-    <div className="auth-page">
+    <main className={`auth-page auth-page--${mode}`}>
 
       {/* ── Left — brand panel ─────────────────────── */}
-      <div className="auth-brand" aria-hidden="true">
+      <aside className="auth-brand" aria-label="StructIQ introduction">
         <div className="auth-brand__inner">
-          <div className="auth-brand__logo">
-            StructIQ
-          </div>
+          <a className="auth-brand__identity" href="#/" aria-label="StructIQ home">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M7 28V8h22M7 18h22M18 8v20" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="7" cy="8" r="2.5" fill="currentColor"/><circle cx="29" cy="28" r="2.5" fill="currentColor"/></svg>
+            <span className="auth-brand__logo">StructIQ</span>
+          </a>
           <p className="auth-brand__descriptor">
-            Structural Engineering Knowledge System
+            STRUCTURAL ENGINEERING / KNOWLEDGE STUDIO
           </p>
           <div className="auth-brand__frame">
             <AuthFrame />
           </div>
+          <p className="auth-brand__drawing-caption">FIG 01 · FRAME ELEVATION · LOAD TRANSFER TO GROUND</p>
           <p className="auth-brand__tagline">
-            Understand structures.<br />
-            Think like an engineer.
+            Understand the structure.<br />Question the model.<br/>Make the engineering judgement.
           </p>
           <div className="auth-brand__meta">
             <span className="auth-brand__version">V 0.1 ALPHA</span>
@@ -177,10 +178,10 @@ export default function Auth() {
             <span>Knowledge in development</span>
           </div>
         </div>
-      </div>
+      </aside>
 
       {/* ── Right — form panel ─────────────────────── */}
-      <div className="auth-form-panel">
+      <section className="auth-form-panel" aria-labelledby="auth-title">
         <div className="auth-form-inner">
 
           {/* Header */}
@@ -188,7 +189,7 @@ export default function Auth() {
             <p className="auth-label">
               {mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
             </p>
-            <h1 className="auth-form-title">
+            <h1 className="auth-form-title" id="auth-title">
               {mode === 'login' ? 'Welcome back' : 'Get started'}
             </h1>
             <p className="auth-form-desc">
@@ -304,8 +305,8 @@ export default function Auth() {
           </p>
 
         </div>
-      </div>
+      </section>
 
-    </div>
+    </main>
   );
 }

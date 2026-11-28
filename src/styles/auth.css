@@ -8,6 +8,7 @@
   grid-template-columns: 2fr 3fr;
   font-family: var(--sans);
 }
+.auth-brand{background:var(--brand)}.auth-form-title{color:var(--ink-1)}.auth-submit{background:var(--brand);color:var(--surface)}.auth-submit:hover:not(:disabled){background:var(--brand-mid)}.auth-form-panel::before{opacity:.25}.auth-brand__frame{border-color:rgba(255,255,255,.18)}.auth-field__input:focus{border-color:var(--brand-mid);box-shadow:0 0 0 3px rgba(63,113,106,.16)}
 
 /* ── LEFT BRAND PANEL ──────────────────────────────── */
 .auth-brand {
@@ -49,6 +50,7 @@
   color: #E2EAE3;
   line-height: 1;
 }
+.auth-brand__identity{display:flex;align-items:center;gap:.8rem;color:#f4f0e6;text-decoration:none}.auth-brand__identity svg{width:38px;height:38px;flex:none}.auth-brand__drawing-caption{font: .55rem var(--mono);letter-spacing:.1em;color:rgba(255,255,255,.5);margin:-1.4rem 0 1.8rem}.auth-brand__inner{max-width:420px}.auth-brand__frame{border-radius:0;background:rgba(255,255,255,.025)}
 
 .auth-brand__descriptor {
   font-family: var(--mono);
@@ -133,6 +135,7 @@
   width: 100%;
   max-width: 420px;
 }
+.auth-form-panel{padding:4rem 2rem}.auth-form-inner{max-width:440px;background:rgba(251,250,246,.94);padding:clamp(1.5rem,4vw,3rem);border:1px solid var(--rule);box-shadow:var(--shadow-md)}.auth-form-head{border-bottom:0;padding-bottom:0;margin-bottom:1.5rem}.auth-label{color:var(--terracotta)}.auth-form-title{font-size:clamp(2rem,3vw,2.8rem);letter-spacing:-.045em}.auth-form-desc{max-width:40ch}.auth-field__input{height:50px;border-radius:0;background:var(--surface)}.auth-submit{height:50px;border-radius:0;background:var(--terracotta);color:#fff}.auth-submit:hover:not(:disabled){background:#984a35}.auth-msg{border-radius:0}.auth-disclaimer{color:var(--ink-3)}
 
 /* Header */
 .auth-label {
@@ -377,3 +380,5 @@
     padding: 1.5rem;
   }
 }
+@media(max-width:860px){.auth-brand{padding:1.5rem 1.25rem}.auth-brand__frame{display:block;max-width:390px;margin:1rem 0 1.6rem}.auth-brand__inner{max-width:620px}.auth-form-panel{padding:1rem 1.25rem 2rem}.auth-form-inner{max-width:620px;margin:0 auto}.auth-brand__drawing-caption{margin-top:-1.3rem}}
+@media(max-width:480px){.auth-brand__frame{max-width:100%}.auth-brand__tagline{font-size:1rem}.auth-form-inner{padding:1.25rem}.auth-form-title{font-size:1.8rem}}

@@ -1,10 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react';
-import {
-  Search, BookOpen, MessageCircle, ChevronRight,
-  Sparkles, ArrowRight, Menu, X,
-} from 'lucide-react';
+import { Search, BookOpen, MessageCircle, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
 import { knowledge, knowledgeById, categories, findKnowledge, getPrerequisites } from '../data/knowledge';
 import SourceReviewPanel from '../components/SourceReviewPanel.jsx';
+import Nav from '../components/Nav.jsx';
 import '../styles.css';
 
 /* ═══════════════════════════════════════════════════════
@@ -64,49 +62,12 @@ export default function ExploreApp({ initialConcept }) {
 
   return (
     <div className="app">
-      {/* ── HEADER ─────────────────────────────────────── */}
-      <header className="top">
-        <div className="brand">
-          <div className="brandMark">S</div>
-          <div>
-            <div className="brandName">
-              STRUCT<span>IQ</span>
-            </div>
-            <div className="brandSub">
-              Knowledge Explorer ·{' '}
-              <a href="#/" style={{ color: 'inherit', textDecoration: 'none' }}>
-                ← Home
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <button
-          className="mobileBtn"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded={mobile}
-          onClick={() => setMobile(!mobile)}
-        >
-          {mobile ? <X /> : <Menu />}
-        </button>
-
-        <div className="topSearch">
-          <Search size={18} />
-          <input
-            aria-label="Search concepts"
-            placeholder="Search any engineering concept…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-      </header>
-
+      <Nav current="explore" />
       {/* ── LAYOUT ─────────────────────────────────────── */}
       <div className="layout">
         {/* SIDEBAR */}
-        <aside className={mobile ? 'sidebar open' : 'sidebar'}>
-          <div className="sideTitle">Explore</div>
+        <nav className={mobile ? 'sidebar open' : 'sidebar'} aria-label="Knowledge categories">
+          <div className="sideTitle">Browse the library</div>
           <button
             className={category === 'All' ? 'sideBtn active' : 'sideBtn'}
             onClick={() => setCategory('All')}
@@ -122,57 +83,23 @@ export default function ExploreApp({ initialConcept }) {
               <ChevronRight /> {c}
             </button>
           ))}
-          <div className="sideCard">
-            <Sparkles size={18} />
-            <b>Mentor mode</b>
-            <p>Ask why, how, what-if, or practical engineering questions.</p>
-          </div>
-        </aside>
+          <a className="sideCard mentorShortcut" href="#mentor"><Sparkles size={18}/><b>Concept Mentor</b><p>Local concept matching prototype</p></a>
+        </nav>
 
         {/* MAIN */}
         <main className="main">
-          {/* HERO STRIP */}
-          <section className="hero">
-            <div>
-              <div className="eyebrow">ENGINEERING KNOWLEDGE ENGINE</div>
-              <h1>
-                Understand structures.
-                <br />
-                <em>Think like an engineer.</em>
-              </h1>
-              <p>
-                Explore structural concepts through definitions, mechanics, practical
-                meaning, failure modes, equations and connected ideas.
-              </p>
-              <div className="heroSearch">
-                <Search />
-                <input
-                  aria-label="Search concepts"
-                  placeholder="Try: P-Delta, shear force, stiffness…"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="heroGraphic">
-              <div className="tower">
-                {[0, 1, 2, 3, 4].map((f) => (
-                  <div className="floor" key={f}>
-                    <i /><i /><i /><i />
-                  </div>
-                ))}
-                <div className="ground" />
-              </div>
-              <div className="loadArrow">LOAD PATH ↓</div>
-            </div>
-          </section>
+          <header className="knowledge-header">
+            <div><p className="eyebrow">STRUCTIQ / KNOWLEDGE LIBRARY / 01</p><h1>Structural knowledge,<br/><em>connected by behaviour.</em></h1><p>Explore mechanics, load paths, failure modes and the ideas that connect them.</p></div>
+            <div className="knowledge-search"><Search aria-hidden="true"/><input aria-label="Search concepts" placeholder="Search concepts, behaviours or elements…" value={query} onChange={(e)=>setQuery(e.target.value)}/><kbd>/</kbd></div>
+            <div className="knowledge-header-meta"><span>54 CONCEPTS</span><span>SELECTED / {category.toUpperCase()}</span></div>
+          </header>
 
           {/* KNOWLEDGE GRID */}
-          <section className="contentGrid">
+          <section className="contentGrid" aria-label="Knowledge library and selected concept">
             <div className="library">
               <div className="sectionHead">
                 <div>
-                  <span className="eyebrow">KNOWLEDGE LIBRARY</span>
+                  <span className="eyebrow">INDEX / {String(filtered.length).padStart(2,'0')} MATCHES</span>
                   <h2>{category === 'All' ? 'Core concepts' : category}</h2>
                 </div>
                 <span className="count">{filtered.length} concepts</span>
@@ -251,16 +178,15 @@ export default function ExploreApp({ initialConcept }) {
             )}
           </section>
 
-          {/* MENTOR */}
+          {/* LOCAL MENTOR PROTOTYPE */}
           <section className="mentor" id="mentor">
             <div className="mentorIntro">
               <div className="mentorIcon"><MessageCircle /></div>
               <div>
-                <span className="eyebrow">ENGINEERING MENTOR</span>
-                <h2>Ask the question behind the calculation.</h2>
+                <span className="eyebrow">CONCEPT MATCH / LOCAL PROTOTYPE</span>
+                <h2>Start with the behaviour.</h2>
                 <p>
-                  Start with the engineering concept. This interface will eventually
-                  understand projects, selected codes and imported analysis results.
+                  Questions are matched to concepts in this library. Responses are local summaries, not a connected AI service or project analysis.
                 </p>
               </div>
             </div>
