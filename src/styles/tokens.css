@@ -1,23 +1,45 @@
-/* STRUCTIQ — Design tokens */
 :root {
-  --bg:        #F8F7F3;
-  --bg-alt:    #F0EEE9;
-  --bg-deep:   #E8E5DE;
-  --surface:   #FFFFFF;
-  --ink-1:     #141412;
-  --ink-2:     #3D3A35;
-  --ink-3:     #706C66;
-  --ink-4:     #A8A39C;
-  --rule:      #D4D0C8;
-  --rule-lt:   #E4E1D8;
-  --brand:     #1A2E1E;
-  --brand-mid: #2B4A33;
-  --brand-lt:  #E6EDE7;
-  --red:       #9B1C1C;
-  --red-lt:    rgba(155,28,28,0.07);
-  --sans:      'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --mono:      'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  color-scheme: light;
+  --bg: #F3F0E8;
+  --bg-alt: #EAE5D9;
+  --bg-deep: #DDD7CA;
+  --surface: #FBFAF6;
+  --surface-raised: #FFFFFF;
+  --ink-1: #202A27;
+  --ink-2: #394540;
+  --ink-3: #69736D;
+  --ink-4: #87908A;
+  --rule: #D6D0C5;
+  --rule-lt: #E5E0D6;
+  --brand: #183F3C;
+  --brand-mid: #3F716A;
+  --brand-lt: #E3ECE7;
+  --terracotta: #B65D43;
+  --ochre: #D0A24E;
+  --sage: #A1A88B;
+  --success: #376C4E;
+  --warning: #946B20;
+  --error: #A13F35;
+  --focus: #B65D43;
+  --shadow-sm: 0 4px 14px rgba(32,42,39,.06);
+  --shadow-md: 0 14px 36px rgba(32,42,39,.10);
+  --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem;
+  --space-6: 1.5rem; --space-8: 2rem; --space-12: 3rem; --space-16: 4rem;
+  --radius-sm: 2px; --radius-md: 6px; --radius-lg: 12px;
+  --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --text-xs: .72rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.25rem;
+  --text-xl: 1.75rem; --text-display: clamp(2.5rem, 5vw, 5rem);
+  --leading-tight: 1.08; --leading-body: 1.65;
+  --ease: 160ms ease;
+  font-family: var(--sans); color: var(--ink-1); background: var(--bg);
 }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink-1);font-family:var(--sans);line-height:var(--leading-body)}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+.sq-nav{position:fixed;z-index:200;inset:0 0 auto;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 max(4vw,1.5rem);background:rgba(243,240,232,.97);border-bottom:1px solid var(--rule);backdrop-filter:blur(8px)}.sq-nav__brand{display:flex;flex-direction:row;align-items:center;gap:.7rem;text-decoration:none;color:var(--brand)}.sq-nav__mark{width:34px;height:34px;flex:none}.sq-nav__brandtext{display:flex;flex-direction:column;gap:3px}.sq-nav__brandword{font-size:.95rem;font-weight:700;line-height:1}.sq-nav__brandsub{font: .5rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}.sq-nav__links{display:flex;gap:1.7rem;align-items:center}.sq-nav__link{font-size:.82rem;color:var(--ink-3);text-decoration:none;padding:.35rem 0;border-bottom:2px solid transparent}.sq-nav__link:hover,.sq-nav__link--active{color:var(--brand);border-color:var(--terracotta)}.sq-nav__toggle{display:none}.sq-nav__user{display:flex;align-items:center;gap:.65rem}.sq-nav__avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:white;font-weight:700}.sq-nav__logout{border:1px solid var(--rule);padding:.4rem .7rem;background:transparent;color:var(--ink-2);cursor:pointer}
+@media(max-width:860px){.sq-nav__toggle{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--rule);background:var(--surface);color:var(--brand);padding:.45rem}.sq-nav__links{display:none;position:absolute;top:58px;left:0;right:0;padding:1rem 1.5rem;background:var(--bg);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0}.sq-nav__links--open{display:flex}.sq-nav__link{padding:.8rem 0;border-bottom:1px solid var(--rule-lt)}}
+@media(max-width:640px){.sq-nav{padding:0 1rem}.sq-nav__brandsub{display:none}.sq-nav__user{display:none}}

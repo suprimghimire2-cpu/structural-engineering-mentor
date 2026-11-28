@@ -50,12 +50,12 @@ const QUESTIONS = [
 ];
 
 const KNOWLEDGE_PATH = [
-  { label: 'Mechanics',  desc: 'Force, moment, shear, stress, strain' },
-  { label: 'Behaviour',  desc: 'Stiffness, strength, stability, ductility' },
-  { label: 'Elements',   desc: 'Beam, column, slab, wall, foundation' },
-  { label: 'Systems',    desc: 'Load paths, frames, lateral systems' },
-  { label: 'Analysis',   desc: 'Models, results, interpretation' },
-  { label: 'Design',     desc: 'Codes, checks, judgement' },
+  { label: 'Learn', desc: 'Build the mechanics and behaviour' },
+  { label: 'Analyse', desc: 'Read models, forces and response' },
+  { label: 'Code', desc: 'Compare design approaches' },
+  { label: 'Design', desc: 'Connect demand to capacity' },
+  { label: 'Detail', desc: 'Carry the load path into construction' },
+  { label: 'Compare', desc: 'Interpret differences with judgement' },
 ];
 
 /* ── Structural Frame SVG ────────────────────────────────── */
@@ -226,29 +226,18 @@ function StructuralFrame() {
 
 function Opening() {
   return (
-    <section className="h-opening" aria-label="Introduction">
+    <section className="h-opening" aria-labelledby="home-title">
       <div className="h-opening__left">
-        <p className="h-label">STRUCTURAL ENGINEERING KNOWLEDGE SYSTEM · V 0.1</p>
-        <h1 className="h-opening__title">
-          Understand how<br />structures work.
-        </h1>
-        <p className="h-opening__sub">
-          StructIQ provides a structured environment for learning structural
-          engineering from first principles — mechanics, behaviour, analysis,
-          design and engineering judgement.
-        </p>
-        <div className="h-opening__actions">
-          <a href="#/explore" className="h-btn h-btn--primary">
-            Explore Structural Knowledge
-          </a>
-          <a href="#/explore#mentor" className="h-btn h-btn--ghost">
-            Enter Mentor
-          </a>
-        </div>
+        <p className="h-label">STRUCTIQ / STRUCTURAL KNOWLEDGE STUDIO / V 0.1</p>
+        <h1 className="h-opening__title" id="home-title">Understand how<br/>structures work.</h1>
+        <p className="h-opening__sub">A learning environment for structural mechanics, physical behaviour, analysis, code comparison and engineering judgement.</p>
+        <div className="h-opening__actions"><a href="#/explore" className="h-btn h-btn--primary">Explore Knowledge <span aria-hidden="true">↗</span></a><a href="#/explore#mentor" className="h-btn h-btn--ghost">Open Mentor <span aria-hidden="true">↗</span></a></div>
+        <p className="h-opening__metadata"><span>01 — 54 CONCEPTS</span><span>02 — LEARNING PROTOTYPE</span></p>
       </div>
-      <div className="h-opening__drawing" aria-hidden="true">
+      <figure className="h-opening__drawing" aria-label="Annotated structural frame elevation">
         <StructuralFrame />
-      </div>
+        <figcaption><span>FIG 01 / STRUCTURAL ELEVATION</span><span>GRID 6000 · STOREY 3000 · NTS</span></figcaption>
+      </figure>
     </section>
   );
 }
@@ -436,11 +425,23 @@ function HomeFooter() {
       <div className="h-footer__brand">
         StructIQ <span>Structural Engineering Knowledge System</span>
       </div>
+      <nav className="h-footer__nav" aria-label="Footer navigation"><a href="#/">Overview</a><a href="#/explore">Knowledge</a><a href="#/explore#mentor">Mentor</a><a href="#/codes">Code Learning</a></nav>
       <div className="h-footer__meta">
-        V 0.1 ALPHA — KNOWLEDGE IN DEVELOPMENT — NOT FOR USE IN STRUCTURAL DESIGN
+        V 0.1 ALPHA · KNOWLEDGE IN DEVELOPMENT · EDUCATIONAL CONTENT IS NOT PROJECT-SPECIFIC DESIGN ADVICE
       </div>
     </footer>
   );
+}
+
+function ProductExperiences() {
+  return <section className="h-section h-experiences" aria-labelledby="experiences-title"><div className="h-section__inner">
+    <div className="h-section__lede"><p className="h-label">THREE WAYS TO WORK</p><h2 id="experiences-title">A connected engineering workspace.</h2><p className="h-experiences__intro">Move from understanding a concept to examining a calculation, with the limits of each tool made clear.</p></div>
+    <div className="h-experience-list">
+      <article className="h-experience h-experience--knowledge"><span className="h-experience__index">01 / LIBRARY</span><div><h3>Knowledge Explorer</h3><p>Search structural concepts, follow prerequisites and related ideas, and read explanations through behaviour, load path and failure.</p><a href="#/explore">Enter the library <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">K</span></article>
+      <article className="h-experience h-experience--mentor"><span className="h-experience__index">02 / PROTOTYPE</span><div><h3>Engineering Mentor</h3><p>Ask a question and explore the best-matching concept with a local, concept-based response prototype.</p><a href="#/explore#mentor">Open Mentor <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">M</span></article>
+      <article className="h-experience h-experience--codes"><span className="h-experience__index">03 / WORKBENCH</span><div><h3>Code Learning</h3><p>Compare the current RC beam flexural example under ACI 318, IS 456 and Eurocode 2 using shared inputs.</p><a href="#/codes">Open the workbench <span aria-hidden="true">↗</span></a></div><span className="h-experience__mark" aria-hidden="true">C</span></article>
+    </div>
+  </div></section>;
 }
 
 /* ── Home page root ──────────────────────────────────────── */
@@ -453,7 +454,7 @@ export default function Home() {
       <Domains />
       <Philosophy />
       <Elements />
-      <MentorPreview />
+      <ProductExperiences />
       <HomeFooter />
     </div>
   );

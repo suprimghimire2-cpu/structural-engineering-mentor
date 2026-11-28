@@ -25,11 +25,13 @@
 
 .sq-nav__brand {
   display: flex;
-  flex-direction: column;
-  gap: 1px;
+  flex-direction: row;
+  align-items: center;
+  gap: .7rem;
   text-decoration: none;
   color: inherit;
 }
+.sq-nav__mark{width:34px;height:34px;color:var(--brand);flex:none}.sq-nav__brandtext{display:flex;flex-direction:column;gap:3px}.sq-nav__toggle{display:none;border:1px solid var(--rule);background:var(--surface);color:var(--brand);padding:.45rem;cursor:pointer}
 
 .sq-nav__brandword {
   font-family: var(--sans);
@@ -337,7 +339,7 @@
 
 /* ── Philosophy ───────────────────────────────────── */
 .h-philosophy {
-  background: #182C1E;
+  background: var(--brand);
   color: #E2EAE3;
   border-top: none;
 }
@@ -621,6 +623,14 @@
   .h-footer__meta { text-align: left; }
   .h-mentor__inner { gap: 2rem; }
 }
+
+/* Cohesive product and responsive navigation refinements */
+.h-opening__left{padding-top:6rem;padding-bottom:5rem}.h-opening__title{font-size:var(--text-display);max-width:10ch}.h-opening__drawing{background:var(--bg-alt);border-left:1px solid var(--rule)}.h-label{color:var(--brand-mid)}.h-label--light{color:#d7dfd3}.h-path__step{background:transparent;border-right-color:var(--rule);padding:1.6rem 1.2rem 2rem}.h-path__num{color:var(--terracotta)}.h-domain-row--live .h-domain-row__status{color:var(--brand);border-color:var(--brand)}.h-domain-row--partial .h-domain-row__status{color:#74601f;border-color:var(--ochre)}.h-philosophy__q-text{color:#e0e8de}.h-mentor__terminal{box-shadow:var(--shadow-md)}.h-footer{flex-wrap:wrap}.h-footer__brand{font-size:1rem}.h-footer__meta{max-width:55ch;line-height:1.7}
+.h-opening__drawing{margin:0;display:flex;flex-direction:column;justify-content:center;padding:2rem 3vw}.h-opening__drawing figcaption{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid var(--rule);padding:.7rem .2rem;font:.58rem var(--mono);letter-spacing:.08em;color:var(--ink-3)}.h-opening__metadata{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:2rem;font:.58rem var(--mono);letter-spacing:.08em;color:var(--ink-3)}.h-opening__drawing svg{max-height:75vh}
+.h-experiences{background:var(--surface)}.h-experiences .h-section__lede h2{font-size:clamp(1.8rem,3vw,2.8rem);line-height:1.12;letter-spacing:-.035em;color:var(--brand);margin:.3rem 0 1rem}.h-experiences__intro{max-width:55ch;color:var(--ink-2)}.h-experience-list{border-top:1px solid var(--rule)}.h-experience{display:grid;grid-template-columns:150px minmax(0,1fr) 90px;gap:1.5rem;align-items:start;padding:1.8rem 0;border-bottom:1px solid var(--rule)}.h-experience__index{font: .62rem var(--mono);letter-spacing:.1em;color:var(--terracotta)}.h-experience h3{font-size:1.45rem;color:var(--brand);margin:0 0 .55rem}.h-experience p{max-width:65ch;color:var(--ink-2);margin:0 0 .8rem}.h-experience a{color:var(--brand);font-weight:600;text-decoration-thickness:1px;text-underline-offset:4px}.h-experience__mark{font:3.5rem Georgia,serif;color:var(--sage);text-align:right}.h-footer__nav{display:flex;gap:1.1rem;flex-wrap:wrap}.h-footer__nav a{color:var(--brand);font-size:.8rem;text-decoration:none}.h-footer__nav a:hover{text-decoration:underline}
+@media(max-width:860px){.sq-nav{height:58px}.sq-nav__toggle{display:inline-flex;align-items:center;justify-content:center}.sq-nav__links{display:none;position:absolute;top:58px;left:0;right:0;padding:1rem 1.5rem;background:var(--bg);border-bottom:1px solid var(--rule);box-shadow:var(--shadow-sm);flex-direction:column;align-items:stretch;gap:0}.sq-nav__links--open{display:flex}.sq-nav__link{padding:.8rem 0;border-bottom:1px solid var(--rule-lt)}.sq-nav__user{margin-left:auto}.h-opening{padding-top:58px}.h-opening__drawing{min-height:55vw}.h-opening__left{min-height:55vh}}
+@media(max-width:640px){.sq-nav{padding:0 1rem}.sq-nav__user{display:none}.h-opening__title{font-size:clamp(2.5rem,12vw,3.5rem)}.h-opening__drawing{min-height:70vw}.h-path__step:nth-child(n){border-right:0;border-bottom:1px solid var(--rule)}.h-path__step:last-child{border-bottom:0}.h-elem-table{font-size:.72rem}.h-elem-table td{padding:.65rem .4rem}}
+@media(max-width:640px){.h-experience{grid-template-columns:1fr 48px;gap:.5rem}.h-experience__index{grid-column:1/-1}.h-experience__mark{grid-column:2;grid-row:2;align-self:center;font-size:2.6rem}.h-footer__nav{width:100%}}
 
 /* ── Accessibility / motion ───────────────────────── */
 .h-elem-link:focus-visible,

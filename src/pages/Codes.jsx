@@ -60,35 +60,31 @@ export default function Codes() {
   return (
     <>
     <Nav current="codes" />
-    <div className="page-wrap wide">
-      <div className="eyebrow-line">CODE LEARNING & COMPARISON · RC BEAM FLEXURE</div>
-      <h1>One beam, three codes</h1>
-      <p className="lead">Same simply supported beam, same geometry and materials; only the code method changes.
-        Follow <strong>Learn → Analyse → Code → Design → Detail → Compare</strong>.</p>
-      <p className="notice warn"><strong>Educational only.</strong> Paraphrased provisions, EN recommended values, no National Annex or local amendments,
-        flexure only (no shear, deflection, cracking or anchorage). Status: <strong>Draft — calculation unit-tested, code clauses not yet independently reviewed.</strong> Not for design.</p>
+    <main className="workbench page-wrap wide">
+      <header className="workbench-head">
+        <div className="eyebrow-line">STRUCTIQ / CODE STUDIO / EXAMPLE 01</div>
+        <p className="workbench-kicker">CODE LEARNING & COMPARISON</p>
+        <h1>One beam.<br/><em>Three design languages.</em></h1>
+        <p className="lead">Explore how ACI 318, IS 456 and Eurocode 2 treat the same simply supported reinforced-concrete beam.</p>
+        <p className="notice warn"><strong>Educational example only.</strong> Draft calculations; code clauses have not been independently reviewed. Not for project design.</p>
+      </header>
 
-      <h2>1 · Define the problem</h2>
-      <div className="inputs">
-        {FIELDS.map(([k, label, unit]) => (
-          <label key={k} className="inp"><span>{label} <small>({unit})</small></span>
-            <input className="input" type="number" inputMode="decimal" min="0" step="any" value={v[k]}
-              onChange={(e) => setV({ ...v, [k]: e.target.value })} /></label>
-        ))}
-      </div>
-      <p className="muted">Assumptions: simply supported, uniformly distributed load, rectangular section, single layer of tension bars, 20 mm aggregate, 8 mm stirrups. Use the same fy for all codes for comparability — real grades differ per country.</p>
-      <div className="chips" role="group" aria-label="Codes to compare">
-        {CODE_META.map((c) => <button key={c.id} aria-pressed={selected.includes(c.id)} className={"chip" + (selected.includes(c.id) ? " on" : "")} onClick={() => toggle(c.id)}>{c.name}</button>)}
-      </div>
+      <section className="workbench-problem" aria-labelledby="problem-title">
+        <div className="workbench-sectionhead"><span className="workbench-index">01 / DEFINE</span><div><h2 id="problem-title">The design situation</h2><p>Adjust the shared input set. Each selected method uses the same values.</p></div></div>
+        <div className="input-group"><h3>Geometry</h3><div className="inputs">{FIELDS.filter(([k]) => ['span','b','d'].includes(k)).map(([k,label,unit]) => <label key={k} className="inp"><span>{label} <small>({unit})</small></span><input className="input" type="number" inputMode="decimal" min="0" step="any" value={v[k]} onChange={(e) => setV({...v,[k]:e.target.value})}/></label>)}</div></div>
+        <div className="input-group"><h3>Materials</h3><div className="inputs">{FIELDS.filter(([k]) => ['fck','fy'].includes(k)).map(([k,label,unit]) => <label key={k} className="inp"><span>{label} <small>({unit})</small></span><input className="input" type="number" inputMode="decimal" min="0" step="any" value={v[k]} onChange={(e) => setV({...v,[k]:e.target.value})}/></label>)}</div></div>
+        <div className="input-group"><h3>Applied loading</h3><div className="inputs">{FIELDS.filter(([k]) => ['dead','live'].includes(k)).map(([k,label,unit]) => <label key={k} className="inp"><span>{label} <small>({unit})</small></span><input className="input" type="number" inputMode="decimal" min="0" step="any" value={v[k]} onChange={(e) => setV({...v,[k]:e.target.value})}/></label>)}</div></div>
+        <div className="input-group"><h3>Reinforcement & cover</h3><div className="inputs">{FIELDS.filter(([k]) => ['db','cover'].includes(k)).map(([k,label,unit]) => <label key={k} className="inp"><span>{label} <small>({unit})</small></span><input className="input" type="number" inputMode="decimal" min="0" step="any" value={v[k]} onChange={(e) => setV({...v,[k]:e.target.value})}/></label>)}</div></div>
+      </section>
+
+      <section className="standard-picker" aria-labelledby="standard-title"><div><span className="workbench-index">02 / METHODS</span><h2 id="standard-title">Select design standards</h2><p>Choose one or more calculation views to compare.</p></div><div className="chips" role="group" aria-label="Codes to compare">{CODE_META.map((c) => <button key={c.id} aria-pressed={selected.includes(c.id)} className={'chip'+(selected.includes(c.id)?' on':'')} onClick={()=>toggle(c.id)}>{c.name}</button>)}</div></section>
+      <aside className="assumption-note"><strong>Shared assumptions</strong><p>Simply supported beam, uniformly distributed load, rectangular section, single tension layer, 20 mm aggregate and 8 mm stirrups. The same steel grade is used for comparability.</p></aside>
       {errs.length > 0 && <div className="notice err" role="alert">{errs.map((e) => <div key={e}>{e}</div>)}</div>}
 
       {!errs.length && (<>
-        <h2>2 · Behaviour & analysis</h2>
-        <p>Load → shear → moment → curvature → deflection. For a UDL on a simple span the factored moment is <code>wu·L²/8</code> and end shear <code>wu·L/2</code>. The load factor, and so the design moment, depends on the code:</p>
-        {results[0] && !results[0].res.fail && <Bmd L={input.span} Mu={results[0].res.Mu} wu={results[0].res.wu} />}
+        <section className="analysis-section"><div className="workbench-sectionhead"><span className="workbench-index">03 / ANALYSE</span><div><h2>Trace the response</h2><p>Uniform load → support shear → span moment → section demand.</p></div></div><div className="analysis-band"><p>For this idealised case, the maximum moment follows <code>wu·L²/8</code>. The applied load factors remain code-specific.</p>{results[0] && !results[0].res.fail && <figure><Bmd L={input.span} Mu={results[0].res.Mu} wu={results[0].res.wu}/><figcaption>FIG 01 · Simply supported span · schematic moment shape</figcaption></figure>}</div></section>
 
-        <h2>3–5 · Code method, result and detail</h2>
-        <div className="code-grid">
+        <section className="results-section"><div className="workbench-sectionhead"><span className="workbench-index">04 / DESIGN</span><div><h2>Results by method</h2><p>Review the assumptions and detailing checks alongside each result.</p></div></div><div className="code-grid">
           {results.map(({ id, name, philosophy, res }) => {
             if (res.fail) return <section key={id} className="code-card"><h3>{name}</h3><p className="notice err">{res.fail}</p></section>;
             const lay = barLayout(res.AsReq, input.db, input.b, input.cover);
@@ -118,8 +114,9 @@ export default function Codes() {
             );
           })}
         </div>
+        </section>
 
-        <h2>6 · Compare — and interpret</h2>
+        <section className="comparison-section"><div className="workbench-sectionhead"><span className="workbench-index">05 / COMPARE</span><div><h2>Read the differences</h2><p>Compare load factors, resistance treatment and resulting steel demand.</p></div></div>
         <div className="table-wrap">
           <table className="cmp">
             <thead><tr><th scope="col">Dimension</th>{results.map((r) => <th scope="col" key={r.id}>{r.name}</th>)}</tr></thead>
@@ -138,9 +135,9 @@ export default function Codes() {
           Resistance factors are applied differently too: ACI reduces the nominal strength with φ, while IS 456 and Eurocode 2 reduce material strengths. Stress-block shapes are not identical,
           and each code limits neutral-axis depth for ductility in its own way. Comparing steel areas is therefore only meaningful for the same design situation, units and edition; a larger
           or smaller As here is not a statement that one code is “safer”. A qualified engineer must interpret differences for any real project.
-        </div>
+        </div></section>
       </>)}
-    </div>
+    </main>
     </>
   );
 }
