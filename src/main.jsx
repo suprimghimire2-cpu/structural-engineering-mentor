@@ -5,6 +5,7 @@ import ExploreApp from './pages/Explore';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Codes from './pages/Codes';
+import Studio from './pages/Studio';
 import './styles/tokens.css';
 
 /* ── Error boundary ─────────────────────────────────── */
@@ -72,6 +73,7 @@ function AppRouter() {
   }
 
   if (route.startsWith('#/codes')) return <Codes />;
+  if (route.startsWith('#/studio')) return <Studio />;
 
   return <Home />;
 }

@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { id: 'explore', label: 'Knowledge',  href: '#/explore' },
   { id: 'mentor',  label: 'Mentor',     href: '#/explore#mentor' },
   { id: 'codes',   label: 'Code Learning', href: '#/codes' },
+  { id: 'studio',  label: 'Analysis Studio', href: '#/studio' },
 ];
 
 export default function Nav({ current = 'home' }) {
