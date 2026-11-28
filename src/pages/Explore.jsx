@@ -3,6 +3,7 @@ import { Search, BookOpen, MessageCircle, ChevronRight, Sparkles, ArrowRight } f
 import { knowledge, knowledgeById, categories, findKnowledge, getPrerequisites } from '../data/knowledge';
 import SourceReviewPanel from '../components/SourceReviewPanel.jsx';
 import Nav from '../components/Nav.jsx';
+import LearningPathPanel from '../components/LearningPathPanel.jsx';
 import '../styles.css';
 
 /* ═══════════════════════════════════════════════════════
@@ -91,8 +92,10 @@ export default function ExploreApp({ initialConcept }) {
           <header className="knowledge-header">
             <div><p className="eyebrow">STRUCTIQ / KNOWLEDGE LIBRARY / 01</p><h1>Structural knowledge,<br/><em>connected by behaviour.</em></h1><p>Explore mechanics, load paths, failure modes and the ideas that connect them.</p></div>
             <div className="knowledge-search"><Search aria-hidden="true"/><input aria-label="Search concepts" placeholder="Search concepts, behaviours or elements…" value={query} onChange={(e)=>setQuery(e.target.value)}/><kbd>/</kbd></div>
-            <div className="knowledge-header-meta"><span>54 CONCEPTS</span><span>SELECTED / {category.toUpperCase()}</span></div>
+            <div className="knowledge-header-meta"><span>{knowledge.length} CONCEPTS</span><span>SELECTED / {category.toUpperCase()}</span></div>
           </header>
+
+          <LearningPathPanel onChoose={choose} />
 
           {/* KNOWLEDGE GRID */}
           <section className="contentGrid" aria-label="Knowledge library and selected concept">

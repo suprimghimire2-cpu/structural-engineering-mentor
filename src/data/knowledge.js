@@ -1,6 +1,6 @@
 // ============================================================================
 // STRUCTIQ — COMPLETE KNOWLEDGE BASE
-// Version 2.0 — Sprint 1 + 2: 55 concepts across 8 domains
+// Version 2.1 — Structural Analysis Academy: 66 concepts across 9 domains
 // Engineering accuracy: all equations are standard structural mechanics.
 // Code-specific values are flagged. Simplified explanations are labelled.
 // ============================================================================
@@ -2044,6 +2044,282 @@ export const knowledge = [
   },
 
 
+  {
+    id: 'compatibility', title: 'Compatibility', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Foundation', levelNum: 0, status: 'complete',
+    prerequisites: ['equilibrium','support-conditions'], unlocks: ['principle-of-virtual-work','flexibility-method','matrix-stiffness-method'],
+    summary: 'Geometric conditions requiring connected members and supports to deform together without gaps, overlaps or impossible joint movements.',
+    sections: {
+      definition: 'Compatibility is the requirement that displacements and rotations throughout a structure fit its geometry, connectivity and support conditions. It is a kinematic condition, distinct from equilibrium: a force system can balance while the proposed deformed shape remains impossible.',
+      physical: 'At a rigid beam-column joint, connected members share the joint translation and rotation. A continuous beam cannot develop a displacement jump at an uncracked connection. Supports restrict selected degrees of freedom, while releases permit relative rotation or translation.',
+      behaviour: 'Compatibility becomes decisive in statically indeterminate structures because equilibrium alone leaves redundant forces unknown. Material stiffness and member geometry determine how the compatible structure distributes those forces. Cracking, yielding, slip or support settlement can change the compatibility model.',
+      loadPath: 'Loads are transferred through connected members whose end displacements agree at shared joints. If a model accidentally disconnects a node, restrains a free degree of freedom or duplicates a joint, its calculated load path and force distribution may change.',
+      equation: 'For a continuous beam, displacement compatibility at a support can be written v(x_s)=0; at a rigid frame joint, u_1=u_2 and θ_1=θ_2. Here v and u are transverse and axial displacements in metres, θ is rotation in radians, and x_s is a support coordinate. Small-displacement linear analysis assumes the geometry changes are small.',
+      analysis: 'Identify every node and degree of freedom; impose support constraints; write continuity conditions across member connections; and combine these with equilibrium and constitutive relations. In force methods, compatibility solves for redundants. In stiffness methods, shared degrees of freedom enforce it directly.',
+      resultInterpretation: 'Inspect displacement continuity, support movements, joint rotations and the sign of reactions. A numerical solution with a large displacement jump at an un-released connection usually signals a modelling or assembly error, not unusual physical behaviour.',
+      practice: 'For a two-span continuous beam, impose zero vertical displacement at all three supports and one common rotation at each un-released support joint. If the middle support settles by Δ, the compatibility condition is v_B=Δ rather than zero; the settlement can create secondary moments.',
+      designThinking: 'Compatibility explains why indeterminate structures can redistribute load and why stiffness matters even when member strengths do not change. Engineers should identify which deformation assumptions control the force distribution before interpreting a precise software result.',
+      construction: 'Construction sequence, temporary props, connection tightening and support settlement can impose or release movement constraints. A final-state compatibility model may not represent the structure while partially erected or before the concrete and connections reach their assumed stiffness.',
+      failureReasoning: 'Incorrect compatibility assumptions can create artificial restraints and moments or suppress real movement. Either error can hide a critical demand, create misleading force peaks or predict a load path the built structure cannot provide.',
+      failureModes: ['Disconnected analytical nodes where a continuous joint is intended.','Artificial fixity that prevents actual support rotation or settlement.'],
+      commonMistakes: ['Treating compatibility as another equilibrium equation.','Assuming every connection is rigid without checking its intended behaviour.'],
+      troubleshooting: ['If adjacent member end displacements differ unexpectedly, inspect node sharing, releases and coordinate transformations.'],
+      practicalQuestion: 'Which translations and rotations must be equal at each connection, and which are intentionally released?',
+      related: ['equilibrium','support-conditions','determinacy','deflection','principle-of-virtual-work']
+    }
+  },
+  {
+    id: 'principle-of-virtual-work', title: 'Principle of Virtual Work', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Intermediate', levelNum: 1, status: 'complete',
+    prerequisites: ['equilibrium','compatibility'], unlocks: ['unit-load-method','flexibility-method'],
+    summary: 'A work balance relating a statically admissible force system to a kinematically admissible virtual displacement field.',
+    sections: {
+      definition: 'For a body in equilibrium, the external virtual work equals the internal virtual work for any small, compatible virtual displacement consistent with the constraints. Virtual means imagined and infinitesimal; it is a mathematical test field, not an additional physical movement.',
+      physical: 'Forces acting through imagined displacements do work. Internal stresses do work through compatible strains. Equating the two expresses equilibrium in a form that can be paired with a carefully chosen displacement field to extract a target displacement or generalized force.',
+      behaviour: 'The principle applies to linear elastic structures and can be generalized to other constitutive behaviour when work conjugacy is respected. In beam applications, bending dominates only when shear and axial deformation are negligible or intentionally omitted.',
+      loadPath: 'External work is assembled from applied forces times their virtual displacements and moments times virtual rotations. Internal beam work is the integral of Mδκ, plus Nδε and Vδγ where axial and shear effects are included.',
+      equation: 'δW_ext=δW_int. For an elastic beam, ∫M m/(EI) dx gives a displacement when m is the virtual bending moment from a unit virtual action; M and m have force·length and force units respectively, EI has force·length², and dx is length. Signs follow the chosen positive internal actions and virtual direction.',
+      analysis: 'Choose the desired displacement direction; apply a virtual unit force or moment there; find the corresponding internal virtual actions; multiply them by actual actions divided by stiffness and integrate over members. Sum all included deformation modes and check dimensional consistency.',
+      resultInterpretation: 'The sign indicates whether the displacement aligns with the chosen unit-action direction. A zero contribution may result from a zero actual moment, zero virtual moment or symmetry cancellation; it does not imply that the member is unloaded everywhere.',
+      practice: 'For a truss joint displacement, apply a unit virtual force in the requested direction, solve member virtual forces, and sum Σ(N_i n_i L_i/EA_i). This discrete work sum is the truss form of the same principle.',
+      designThinking: 'Virtual work is a unifying basis for deflection methods and finite-element formulations. It also supplies independent checks for displacement results without reproducing the original displacement solution.',
+      construction: 'The assumed stiffness distribution must represent the state being assessed. Cracked concrete, composite action, connection slip and temporary support conditions change internal work and therefore the predicted displacement.',
+      failureReasoning: 'Mixing inconsistent sign conventions or omitting a deformation mode can produce plausible but biased deflections. Using a virtual field that violates the supports invalidates the work statement.',
+      failureModes: ['Virtual displacement violates an essential support constraint.','Internal and external work signs are inconsistent.'],
+      commonMistakes: ['Confusing actual and virtual actions.','Dropping axial or shear work where it is significant.'],
+      troubleshooting: ['Check units of every integrated term and reverse the virtual unit action; the computed displacement sign should reverse.'],
+      practicalQuestion: 'Does the virtual displacement field satisfy all supports and connections while pointing in the degree of freedom you want to measure?',
+      related: ['equilibrium','compatibility','unit-load-method','deflection','flexibility-method']
+    }
+  },
+  {
+    id: 'unit-load-method', title: 'Unit Load Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Intermediate', levelNum: 1, status: 'complete',
+    prerequisites: ['principle-of-virtual-work','deflection','beam'], unlocks: ['moment-area-method','conjugate-beam-method'],
+    summary: 'A virtual-work procedure for finding a selected displacement by applying a unit action in its direction and integrating force-deformation products.',
+    sections: {
+      definition: 'The unit-load method is the virtual-work method specialized to calculate a displacement or rotation. Apply a unit force at the target displacement, or a unit moment at the target rotation, then pair virtual member actions with actual actions through member stiffness.',
+      physical: 'The unit action creates a virtual internal-force pattern. Regions where this pattern overlaps the actual force pattern contribute to the requested movement; regions with little overlap contribute little regardless of their length.',
+      behaviour: 'For a linearly elastic Euler-Bernoulli beam, bending contribution is dominant. Axial and shear terms can be added when deformation warrants them. The method assumes consistent geometry, linear response and an appropriate EI distribution.',
+      loadPath: 'The virtual unit action is carried through virtual reactions and internal actions to the supports. Actual and virtual moment diagrams must both satisfy their respective equilibrium conditions before the product integral is evaluated.',
+      equation: 'Vertical displacement: Δ=∫₀ᴸ M(x)m(x)/[E(x)I(x)] dx. M is actual moment, m is moment from a unit force at the target, E is elastic modulus, I is second moment of area, and x is distance. With kN and m, EI must be kN·m² and Δ is metres. Positive sign follows the unit-force direction.',
+      analysis: 'Solve the actual structure for M(x). Apply a 1 kN virtual force at the target in the desired direction and solve m(x). Divide their product by EI, integrate piecewise between load or stiffness discontinuities, and add axial/shear terms if required.',
+      resultInterpretation: 'A positive Δ is in the assumed unit-load direction; a negative value is opposite. Compare magnitude to serviceability needs only with the correct stiffness state and all relevant deformation components included.',
+      practice: 'Worked example — simply supported beam, L=6 m, centre load P=20 kN, constant EI=25,000 kN·m². By symmetry R_A=R_B=10 kN. On the left half 0≤x≤3 m, actual M=10x kN·m. Apply a unit downward force at midspan; the virtual left reaction is 0.5 and m=0.5x. The half-span contribution is ∫₀³(10x)(0.5x)/EI dx=45/25,000=0.0018 m. Symmetry gives total Δ=2(0.0018)=0.0036 m=3.6 mm downward; the factor two is applied only after evaluating the half-span integral. Independent check: PL³/(48EI)=20·6³/(48·25,000)=0.0036 m. Reactions sum to 20 kN.',
+      designThinking: 'The method is especially useful for a displacement at a single location and for checking software output. A unit action at a support degree of freedom instead yields flexibility coefficients used by force methods.',
+      construction: 'Use the effective stiffness appropriate to the structure and loading stage. For cracked or composite members, constant gross-section EI can significantly misstate movement.',
+      failureReasoning: 'An incorrect virtual load location, magnitude convention or moment diagram changes the answer directly. A displacement that fails the PL³/EI scaling check should trigger an audit of the integration.',
+      failureModes: ['Wrong virtual reaction or moment diagram.','Treating a changing EI as constant without justification.'],
+      commonMistakes: ['Using a unit moment when a translation is requested.','Forgetting to integrate both beam regions by symmetry.'],
+      troubleshooting: ['Check the answer against the closed-form centre-load deflection PL³/(48EI), dimensions and the sign obtained by reversing the unit load.'],
+      practicalQuestion: 'Does your virtual action point in the requested direction, and do both moment functions satisfy their own equilibrium diagrams?',
+      related: ['principle-of-virtual-work','deflection','moment-area-method','conjugate-beam-method']
+    }
+  },
+  {
+    id: 'moment-area-method', title: 'Moment-Area Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Intermediate', levelNum: 1, status: 'complete',
+    prerequisites: ['unit-load-method','moment','deflection'], unlocks: ['conjugate-beam-method'],
+    summary: 'A beam-deflection method based on the area of the M/EI diagram and its first moment.',
+    sections: {
+      definition: 'The two moment-area theorems relate changes in slope and tangential deviation between beam points to the area and first moment of the curvature diagram M/EI. They are most direct for beams with simple moment-diagram geometry.',
+      physical: 'Curvature accumulates along a beam into rotation; rotation accumulates into displacement. The signed area of M/EI measures rotation change, while its centroidal lever arm measures a tangential deviation.',
+      behaviour: 'The method assumes small deflection and uses curvature approximately M/EI for a linearly elastic Euler-Bernoulli beam. It is convenient for point values and piecewise diagrams, but less efficient for many unknown joint displacements.',
+      loadPath: 'The moment diagram follows equilibrium and support conditions. Its curvature distribution changes the slope and vertical position from one section to another; support compatibility then determines integration constants or reactions.',
+      equation: 'Theorem 1: θ_B−θ_A=∫ᴬᴮ M/EI dx. Theorem 2: tangential deviation of B from tangent at A equals ∫ᴬᴮ (M/EI)(x_B−x)dx. M is kN·m, EI kN·m², and x metres; slope is radians and deviation is metres. Signed areas follow the chosen sagging-positive convention.',
+      analysis: 'Draw M, divide by EI, and split the diagram into standard shapes. Find signed area for rotation change; find first moment about the target point for tangential deviation; apply known support slopes or displacements to solve unknowns.',
+      resultInterpretation: 'The tangential deviation is measured from a tangent, not directly from the global datum. Use geometry and a second compatibility relation to recover absolute deflection. Symmetry should produce zero slope at a symmetric centreline.',
+      practice: 'Worked example — simply supported beam, L=6 m, w=10 kN/m, constant EI=25,000 kN·m². Reactions are 30 kN each and M(x)=30x−5x². The first theorem gives slope change as area under M/EI: A=∫₀³(30x−5x²)/EI dx=90/EI=0.0036 rad. The area first moment about midspan is ∫₀³(30x−5x²)(3−x)dx/EI=101.25/EI; its centroid is x̄=168.75/90=1.875 m from A, so its lever arm to midspan is 1.125 m and tangent deviation t=A·1.125=101.25/EI=0.00405 m. The support tangent slope magnitude is θ_A=90/EI=0.0036 rad. The tangent drop over 3 m is θ_A·3=0.0108 m; correcting by the positive tangential deviation gives δ=0.0108−0.00405=0.00675 m=6.75 mm downward. Independent check: 5wL⁴/(384EI)=5·10·6⁴/(384·25,000)=0.00675 m. Total reactions 60 kN equal total load.',
+      designThinking: 'It helps engineers see why curvature, rather than bending moment alone, controls movement. Use it to estimate deflection shape and validate a numerical model for simple spans and cantilevers.',
+      construction: 'Support settlement or continuity during construction alters boundary slopes and displacements. Include these imposed movements in compatibility rather than applying the unloaded simple-span result unchanged.',
+      failureReasoning: 'Confusing tangential deviation with absolute deflection or omitting sign changes in M/EI can give the wrong deflected shape even if the area magnitude is correct.',
+      failureModes: ['Wrong sign assigned to a negative curvature region.','Using gross EI where cracking materially changes curvature.'],
+      commonMistakes: ['Taking the first moment about the wrong end.','Assuming zero slope at midspan for an asymmetric load.'],
+      troubleshooting: ['Check that symmetric loading gives zero centre slope and that the deflection curve satisfies zero support displacement.'],
+      practicalQuestion: 'Are the signed area and its centroid measured over the correct interval and relative to the correct tangent?',
+      related: ['unit-load-method','conjugate-beam-method','moment','deflection','compatibility']
+    }
+  },
+  {
+    id: 'conjugate-beam-method', title: 'Conjugate Beam Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Intermediate', levelNum: 1, status: 'complete',
+    prerequisites: ['moment-area-method','moment'], unlocks: [],
+    summary: 'A transformed-beam analogy in which a fictitious beam loaded by M/EI has shear equal to real-beam slope and moment equal to real-beam deflection.',
+    sections: {
+      definition: 'The conjugate beam is an analytical beam whose loading is the real beam’s M/EI diagram. Its shear and bending moment correspond to real-beam slope and deflection, respectively, when boundary conditions are transformed consistently.',
+      physical: 'The relation dθ/dx=M/EI resembles beam shear slope under distributed load, while dv/dx=θ resembles moment-to-slope integration. The conjugate construction packages these integrations into ordinary beam statics.',
+      behaviour: 'For a simply supported real beam, the conjugate beam is simply supported; for a fixed real end, the conjugate end is free; for a free real end, the conjugate end is fixed. Intermediate restraints require compatible transformations.',
+      loadPath: 'The M/EI load is carried through fictitious reactions and internal shear/moment. These are mathematical quantities with slope and displacement units, not physical forces in the real structure.',
+      equation: 'q*(x)=M(x)/EI; V*(x)=θ(x); M*(x)=v(x), subject to the selected consistent signs. M/EI has units 1/length, so its integral gives dimensionless rotation and its second integral gives length. Linear elastic beam assumptions apply.',
+      analysis: 'Find real-beam reactions and M; construct the signed M/EI loading; choose conjugate supports from real boundary conditions; solve its reactions and shear/moment at target locations; interpret V* as slope and M* as deflection.',
+      resultInterpretation: 'A conjugate support reaction may encode real slope or displacement constraints. Check dimensions and boundary values: real simple supports have zero displacement, so conjugate bending moment there must be zero.',
+      practice: 'For a simply supported beam with constant EI and symmetric UDL, the conjugate beam has simple supports and a symmetric parabolic M/EI load. Its centre shear is zero by symmetry, matching zero real slope; its centre moment is maximum and equals the downward midspan deflection magnitude.',
+      designThinking: 'This method gives a statics-based picture of a deflected shape and is useful for hand checks. It is less convenient than matrix methods for complex frames or many changing stiffnesses.',
+      construction: 'Segment the conjugate loading wherever EI changes, such as at a splice, cracked region or composite transition. The fictitious load should represent the stiffness of the construction stage under assessment.',
+      failureReasoning: 'Incorrect conjugate end conditions invert a displacement restraint and can produce a plausible but physically impossible curve.',
+      failureModes: ['Fixed/free boundary-condition transformation is reversed.','M/EI sign or unit scaling is inconsistent.'],
+      commonMistakes: ['Treating conjugate-beam shear as real shear force.','Forgetting that conjugate moment has displacement units.'],
+      troubleshooting: ['Check zero real support displacements against zero conjugate moments and compare slopes at boundaries against conjugate shears.'],
+      practicalQuestion: 'Do the conjugate supports correctly encode the real beam’s displacement and rotation boundary conditions?',
+      related: ['moment-area-method','unit-load-method','deflection','compatibility']
+    }
+  },
+  {
+    id: 'method-of-joints', title: 'Method of Joints', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Foundation', levelNum: 0, status: 'complete',
+    prerequisites: ['equilibrium','free-body-diagram','truss'], unlocks: ['method-of-sections'],
+    summary: 'A truss-analysis procedure applying joint equilibrium successively to solve axial member forces.',
+    sections: {
+      definition: 'The method of joints isolates each pin-connected truss joint and applies ΣFx=0 and ΣFy=0. It relies on idealized two-force members, loads applied at joints and a planar truss whose geometry is known.',
+      physical: 'Each member carries axial tension or compression and delivers equal, opposite forces to its end joints. Joint equilibrium transfers the applied load through connected members to the supports.',
+      behaviour: 'Begin at a joint with no more than two unknown member forces. Continue joint by joint as forces become known. A zero-force member may occur under specific joint loading geometry; it must not be assumed without the equilibrium test.',
+      loadPath: 'The nodal loads resolve into member components. Tension pulls away from a joint; compression pushes toward it under the usual assumed-tension convention. The support reactions close the global load path.',
+      equation: 'At each planar joint, ΣFx=0 and ΣFy=0. Member axial force N is in kN; direction cosines are dimensionless. Assume unknown members in tension; a negative answer means compression. The idealization neglects joint eccentricity, member bending and connection deformation.',
+      analysis: 'Find support reactions from whole-truss equilibrium. Draw a joint FBD, resolve member forces using direction cosines, solve the two equations, record sign and proceed to an adjacent solvable joint. Verify at least one joint and global reactions independently.',
+      resultInterpretation: 'Positive N under the assumed convention is tension; negative N is compression. Compression members may need buckling assessment beyond this axial-force analysis. A zero force is conditional on the analyzed load case.',
+      practice: 'Worked example — symmetric triangular truss: supports A(0,0), B(6,0), apex C(3,4) m; pin at A, roller at B; 30 kN downward at C. Each inclined member length is 5 m. Reactions: Ay=By=15 kN by symmetry. At C, 2(−N_AC)(4/5)−30=0 gives each diagonal N=−18.75 kN (compression). At A, Ax=0 and ΣFx gives bottom chord N_AB=+11.25 kN (tension). The other half is symmetric. Check at C: 2·18.75·0.8=30 kN; horizontal components cancel. Global reactions total 30 kN.',
+      designThinking: 'This method reveals which members carry load and how geometry affects force magnitudes. It supplies transparent hand checks for simple trusses before using a larger model.',
+      construction: 'The ideal pin-jointed model may not match rigid, eccentric or partially restrained real connections. Erection bracing and temporary load paths can create force patterns absent from the completed-truss model.',
+      failureReasoning: 'Wrong member geometry, omitted joint load or sign errors can reverse a tension/compression classification. Compression forces without stability checks do not establish adequacy.',
+      failureModes: ['Member assumed as two-force element actually carries significant bending.','Joint eccentricity introduces secondary moments.'],
+      commonMistakes: ['Starting at a joint with three unknowns.','Resolving components using angle measured from the wrong axis.'],
+      troubleshooting: ['Recompute direction cosines from member coordinates and verify each solved joint with both force sums.'],
+      practicalQuestion: 'Can this joint be solved with at most two unknown member forces, and are its member directions drawn correctly?',
+      related: ['method-of-sections','truss','equilibrium','free-body-diagram','axial-force']
+    }
+  },
+  {
+    id: 'method-of-sections', title: 'Method of Sections', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Intermediate', levelNum: 1, status: 'complete',
+    prerequisites: ['equilibrium','free-body-diagram','truss'], unlocks: [],
+    summary: 'A truss procedure that cuts selected members and applies equilibrium to one portion to find target axial forces directly.',
+    sections: {
+      definition: 'A section cut passes through truss members and separates the structure into free bodies. Equilibrium of one side can solve selected member forces without finding every joint force.',
+      physical: 'Cut member forces are the actions one portion exerts on the other. They act along each ideal truss member and must balance the external loads and support reactions on the chosen side.',
+      behaviour: 'A planar section is most efficient when it crosses no more than three unknown member forces and those forces are not arranged in a dependent geometry. Moment equilibrium can eliminate forces whose lines intersect at a chosen point.',
+      loadPath: 'The cut exposes where axial forces transmit load across the section. Choosing one side is an analytical convenience; forces on the opposite side are equal and opposite and yield the same answer.',
+      equation: 'Use ΣFx=0, ΣFy=0, ΣM=0 on the cut free body. Member force in kN follows the assumed-tension sign convention; moment arms are metres. Assumes pin-jointed, straight, two-force members and static equilibrium.',
+      analysis: 'Solve whole-truss reactions. Choose a cut crossing the target member and at most two other unknowns. Isolate the side with fewer loads, draw cut forces, take moments to isolate a nonconcurrent force, then solve remaining force equations.',
+      resultInterpretation: 'Check the sign for tension/compression and verify the cut-body force and moment sums. A force isolated by moments is sensitive to its lever arm, so a geometry sketch is essential.',
+      practice: 'Worked section example (tension positive). Nodes in metres: A(0,0), B(3,0), C(6,0), D(9,0), E(1.5,2), F(4.5,2), G(7.5,2). Members: AB, BC, CD, EF, FG, AE, EB, BF, FC, CG, GD. Supports are pin A and roller D; a 20 kN downward load acts at E. Whole-truss equilibrium gives Dy·9−20·1.5=0, so Dy=3.333 kN; Ay=20−Dy=16.667 kN and Ax=0. Cut BC, BF and EF and isolate the left part containing A, B and E. About B, Ay creates −3·16.667=−50 kN·m and the E load creates +1.5·20=+30 kN·m; tension-positive EF at y=2 creates −2EF. Thus −50+30−2EF=0 and EF=−10 kN (compression). Vertical equilibrium gives 16.667−20+(4/5)BF=0, hence BF=+4.167 kN (tension). Horizontal equilibrium gives Ax+BC+(3/5)BF+EF=0, hence BC=+7.5 kN (tension). Independent cut check: ΣFx=7.5+2.5−10=0; ΣFy=16.667+3.333−20=0; ΣM_A=10+20−30=0 kN·m (BF, EF and E-load contributions respectively). This is a genuine section method: one cut free body and three whole-body equilibrium equations solve the three cut-member forces directly; the method of joints instead isolates successive individual nodes.',
+      designThinking: 'Use sections when only a few member forces are needed for sizing or a quick check. Use joint analysis or a solver when many member forces are required.',
+      construction: 'The cut is an analytical device, but its force result depends on the assumed completed connectivity. Temporary erection states can require a different truss and cut free body.',
+      failureReasoning: 'A cut through too many unknowns cannot be solved by the available equilibrium equations. A visually plausible force result may be wrong if the isolated side omits an external load.',
+      failureModes: ['Cut-body equilibrium omits a reaction or nodal load.','Force direction or lever arm is read from the wrong side of the cut.'],
+      commonMistakes: ['Cutting four unknown members in a planar truss.','Taking moments about a point that fails to eliminate the intended unknown.'],
+      troubleshooting: ['Draw both cut-body alternatives and compare action-reaction signs; validate against a joint solution at one node.'],
+      practicalQuestion: 'Does the selected cut expose the target force while leaving a solvable set of independent equilibrium equations?',
+      related: ['method-of-joints','truss','equilibrium','free-body-diagram','axial-force']
+    }
+  },
+  {
+    id: 'flexibility-method', title: 'Flexibility Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Advanced', levelNum: 2, status: 'complete',
+    prerequisites: ['compatibility','principle-of-virtual-work','determinacy'], unlocks: ['matrix-stiffness-method'],
+    summary: 'A force method that releases selected redundants, then solves them from deformation compatibility.',
+    sections: {
+      definition: 'The flexibility or force method treats selected redundant forces as unknowns. Remove them to create a determinate primary structure, calculate load and redundant displacement contributions, then impose compatibility to solve the redundants.',
+      physical: 'A redundant reaction is the force needed to restore a released displacement constraint. The primary structure deforms under the real loads and the redundant; their displacement effects must sum to the actual support movement.',
+      behaviour: 'The method is efficient for low-degree indeterminacy and provides direct physical meaning for redundants. It requires flexibility coefficients and can become unwieldy as the number of redundants grows.',
+      loadPath: 'The released primary structure has a changed support load path. Redundant forces restore the original restraint and redistribute internal actions through member stiffness.',
+      equation: 'For one redundant X, f₁₁X+Δ₁L=Δ₁, where f₁₁ is displacement at the released coordinate due to a unit X, Δ₁L is displacement due to applied loads, and Δ₁ is imposed support movement. Units of f are displacement/force; signs follow the redundant coordinate.',
+      analysis: 'Select redundants; release them; verify the primary structure is stable and determinate; compute flexibility coefficients by unit loads; compute load displacements; assemble compatibility equations; solve X; recover forces and verify equilibrium.',
+      resultInterpretation: 'Check redundant sign against its assumed direction, support displacement compatibility and reaction equilibrium. Sensitivity to EI indicates whether stiffness assumptions materially control the force distribution.',
+      practice: 'Worked example — propped cantilever, L=4 m, uniform w=10 kN/m downward, constant EI, fixed at A and vertical prop at B. Take upward prop reaction R_B as redundant. Cantilever tip deflection from w is wL⁴/(8EI); upward tip-force deflection is R_BL³/(3EI). Compatibility: wL⁴/(8EI)−R_BL³/(3EI)=0, so R_B=3wL/8=15 kN upward. A_y=wL−R_B=25 kN. Fixed reaction moment magnitude is wL²/2−R_BL=80−60=20 kN·m. Check vertical equilibrium: 25+15=40 kN=wL; support deflection is zero.',
+      designThinking: 'The method shows how support restraint and stiffness create secondary actions. It is valuable for settlement, temperature and prestress problems where compatibility is central.',
+      construction: 'Prop removal, staged loading and foundation settlement alter compatibility. Model the support state and imposed movement at the relevant construction stage.',
+      failureReasoning: 'An unstable primary structure or incorrect sign in the compatibility equation corrupts every recovered force. A redundant with an undefined release coordinate cannot be interpreted consistently.',
+      failureModes: ['Primary structure becomes a mechanism after release.','Compatibility equation uses the wrong support movement sign.'],
+      commonMistakes: ['Choosing too many redundants for a hand solution.','Treating support settlement as zero displacement.'],
+      troubleshooting: ['Check the flexibility coefficient is positive for a force and displacement measured in the same coordinate direction.'],
+      practicalQuestion: 'What displacement is released, and what redundant force restores the original support compatibility?',
+      related: ['compatibility','principle-of-virtual-work','unit-load-method','determinacy','matrix-stiffness-method']
+    }
+  },
+  {
+    id: 'matrix-stiffness-method', title: 'Matrix Stiffness Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Advanced', levelNum: 2, status: 'complete',
+    prerequisites: ['compatibility','equilibrium','flexibility-method'], unlocks: ['slope-deflection-method'],
+    summary: 'A displacement method assembling element force-displacement relations into a global system Kd=F.',
+    sections: {
+      definition: 'The matrix stiffness method expresses nodal actions as element stiffness times nodal displacements, transforms element relations to global coordinates, assembles them, applies constraints and solves for unknown degrees of freedom.',
+      physical: 'Element stiffness describes resistance to a unit displacement pattern. Shared global degrees of freedom impose compatibility; assembled nodal force balance imposes equilibrium.',
+      behaviour: 'The method handles determinate and indeterminate trusses, beams and frames, subject to appropriate element formulations and linearity assumptions. Large rotations, nonlinear material response, instability and contact require additional formulations.',
+      loadPath: 'Element end actions are assembled at shared nodes. Applied nodal and equivalent member loads balance the assembled internal actions; support reactions emerge at constrained degrees of freedom.',
+      equation: 'K d=F. K has force/length units for translational coordinates (mixed units when rotations are included), d contains translations and rotations, and F contains forces and moments. Element matrices depend on E, A, I, L and local/global transformations; sign convention follows the element formulation.',
+      analysis: 'Number nodal degrees of freedom; form each element stiffness and load vector; transform to global coordinates; assemble K and F; impose restraints; solve free displacements; recover element end actions and support reactions; check residual equilibrium.',
+      resultInterpretation: 'Inspect displacement magnitudes, reactions, member end actions, equilibrium residuals and deformed connectivity. A singular K often indicates a mechanism, missing restraint or disconnected degree of freedom.',
+      practice: 'For a two-node axial bar, local stiffness is (EA/L)[[1,−1],[−1,1]]. With one end fixed and the other loaded by P, the free displacement is PL/(EA); recovered axial force is P. This single-element case checks the assembly and units before a frame model.',
+      designThinking: 'Most structural analysis programs use stiffness formulations because they scale well computationally. Understanding assembly, restraints and load vectors helps engineers diagnose model instability and unexpected reactions.',
+      construction: 'Element activation, temporary restraints and staged stiffness affect the global system. The stiffness model must match the erection or loading stage being analyzed.',
+      failureReasoning: 'Incorrect restraints, local axes, releases or load conversion can produce unstable or misleading outputs even when the solver converges.',
+      failureModes: ['Rigid-body mode from insufficient supports.','Incorrect local-to-global transformation.'],
+      commonMistakes: ['Applying member loads as nodal loads without equivalent nodal actions.','Ignoring rotational degree-of-freedom units and sign conventions.'],
+      troubleshooting: ['Inspect the deformed shape and restraint table before interpreting member forces; review singularity warnings and force residuals.'],
+      practicalQuestion: 'Are the element axes, degrees of freedom, restraints and equivalent load vectors consistent with the physical structure?',
+      related: ['compatibility','equilibrium','flexibility-method','slope-deflection-method','deflection']
+    }
+  },
+  {
+    id: 'slope-deflection-method', title: 'Slope-Deflection Method', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Advanced', levelNum: 2, status: 'complete',
+    prerequisites: ['compatibility','matrix-stiffness-method','moment'], unlocks: [],
+    summary: 'A displacement method relating member end moments to end rotations, joint translations and fixed-end actions.',
+    sections: {
+      definition: 'Slope-deflection equations express end moments of a prismatic member in terms of its end rotations, chord rotation and fixed-end moments from member loading. Joint equilibrium and displacement compatibility complete the frame solution.',
+      physical: 'Member rotations and joint sway bend the member; restraint creates end moments. Applied member loads contribute fixed-end actions even when the end rotations are zero.',
+      behaviour: 'Classical equations assume linear elastic response, small displacements, constant EI per member and a chosen sign convention. Sway frames require additional translation unknowns or a separate sway analysis.',
+      loadPath: 'End moments transfer through joints and balance external joint moments. Member shears and axial forces complete member equilibrium and convey loading to supports.',
+      equation: 'For a prismatic member AB with no chord translation, M_AB=M_AB^F+(2EI/L)(2θ_A+θ_B), M_BA=M_BA^F+(2EI/L)(2θ_B+θ_A). θ are end rotations (radians), EI force·length², L length, moments force·length. Chord rotation terms must be added when ends translate; signs depend on convention.',
+      analysis: 'Write end-moment equations for each member; identify joint rotations and any sway translations; write moment equilibrium at joints; impose support conditions; solve simultaneous equations; recover shears and reactions; verify global equilibrium.',
+      resultInterpretation: 'Check joint moment balance, fixed-end moment signs, member-end action-reaction consistency and symmetry. Large sway moments may reflect a missing lateral restraint or incorrect chord-rotation term.',
+      practice: 'For a continuous beam, set restrained support rotations to zero, retain unknown rotation at a free or continuous joint, insert fixed-end moments for each loaded span, and solve joint moment equilibrium. Compare the result with a stiffness-method model using identical EI and end conditions.',
+      designThinking: 'It makes the displacement origin of indeterminate moments explicit and is a useful bridge to matrix stiffness and moment distribution.',
+      construction: 'Connection rigidity and erection sequence affect end rotations. Semi-rigid joints or temporary releases are outside the basic prismatic-member assumption unless explicitly represented.',
+      failureReasoning: 'A missing translation term in a sway frame or inconsistent end-moment signs can reverse the inferred moment diagram.',
+      failureModes: ['Joint moment equilibrium not satisfied.','Member end moments violate equal-and-opposite joint actions.'],
+      commonMistakes: ['Using the no-sway equation for a translating frame.','Mixing clockwise-positive and counterclockwise-positive conventions.'],
+      troubleshooting: ['Check a single fixed-fixed loaded member against its known fixed-end actions before assembling the frame equations.'],
+      practicalQuestion: 'Have you included every independent joint rotation and chord translation in the member equations?',
+      related: ['matrix-stiffness-method','compatibility','moment','flexibility-method']
+    }
+  },
+  {
+    id: 'influence-lines', title: 'Influence Lines', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Advanced', levelNum: 2, status: 'complete',
+    prerequisites: ['equilibrium','shear-force','moment'], unlocks: ['muller-breslau-principle'],
+    summary: 'A response diagram showing how a selected reaction, shear or moment changes as a unit load moves across a structure.',
+    sections: {
+      definition: 'An influence line plots the value of one response quantity at a fixed location as a unit load moves through possible positions. It differs from a shear-force or moment diagram, which shows response along the structure for a fixed loading.',
+      physical: 'The ordinate at each load position is the response caused by a unit load at that position. Multiplying ordinates by moving-load magnitude and summing or integrating gives the response for that load arrangement in a linear system.',
+      behaviour: 'For statically determinate beams, influence lines are piecewise linear. Indeterminate structures generally have curved influence lines depending on stiffness and compatibility. Load placement should maximize the response of interest, including sign.',
+      loadPath: 'As the load travels, reactions and internal actions redistribute while the whole structure remains in equilibrium. The influence line tracks only one chosen response; other response quantities have different lines.',
+      equation: 'For a simply supported span L and a bending-moment section at distance x from support A, let a be the moving point-load position from A. The unit-load influence ordinate is y(a)=a(L−x)/L for 0≤a≤x, and y(a)=x(L−a)/L for x≤a≤L. Its units are metres because it is moment per unit force. A point load P gives M=P·y(a); a distributed load gives the integral of w(a)y(a) da. Sagging moment and positive ordinate are positive; negative ordinates indicate a response of opposite sign.',
+      analysis: 'Select the response and section; move a unit load to coordinate a; solve equilibrium for response; plot ordinate versus a; multiply by actual moving-load magnitudes and superpose. Consider load positions at peaks, zero crossings and discontinuities.',
+      resultInterpretation: 'Positive and negative lobes identify load positions that increase or reduce the selected response. Check ordinate dimensions and endpoint values; a simply supported reaction line should be one at its support and zero at the other.',
+      practice: 'Worked example — simply supported beam L=10 m; assess sagging bending moment at section x=4 m from A. The moving load coordinate a is measured from A. For 0≤a≤4, y=a(10−4)/10=0.6a m; for 4≤a≤10, y=4(10−a)/10=0.4(10−a) m. The branches are zero at supports and meet at a=x with maximum ordinate y=4·6/10=2.4 m. A 50 kN point load at a=4 m produces M=50·2.4=120 kN·m sagging. The ordinate is length (response moment per unit force), not dimensionless; moving the load changes the influence ordinate and therefore the section response.',
+      designThinking: 'Influence lines support moving-load placement for bridges, crane beams and floor systems. They help identify critical positions rather than assuming a single load arrangement governs every response.',
+      construction: 'Construction equipment and material stockpiles also move or occupy changing positions. Evaluate their location-specific effects using an appropriate model and load path.',
+      failureReasoning: 'Using an influence line for the wrong response or neglecting negative lobes may miss a critical load arrangement.',
+      failureModes: ['Load positions chosen from a moment diagram rather than a response influence line.','Sign of ordinate ignored for load placement.'],
+      commonMistakes: ['Confusing influence lines with fixed-load shear/moment diagrams.','Applying point-load ordinate units as dimensionless.'],
+      troubleshooting: ['Verify support ordinates and the value at the response section using statics before applying a train or distributed load.'],
+      practicalQuestion: 'Which load position maximizes the response quantity at the section you are checking?',
+      related: ['muller-breslau-principle','equilibrium','shear-force','moment']
+    }
+  },
+  {
+    id: 'muller-breslau-principle', title: 'Müller-Breslau Principle', category: 'Structural Analysis', domain: 'Structural Analysis', level: 'Advanced', levelNum: 2, status: 'complete',
+    prerequisites: ['influence-lines','compatibility','principle-of-virtual-work'], unlocks: [],
+    summary: 'A qualitative method for sketching an influence line by releasing the restraint associated with a response and imposing a unit displacement.',
+    sections: {
+      definition: 'The Müller-Breslau principle states that the influence line for a response is proportional to the deflected shape obtained by releasing the corresponding restraint and imposing a unit generalized displacement in its positive direction.',
+      physical: 'Releasing a reaction or internal action allows the structure to move in the degree of freedom that response restrains. The resulting mechanism shape indicates where a moving unit load increases or decreases that response.',
+      behaviour: 'For determinate structures, the released shape often gives the exact influence-line geometry up to scale. For indeterminate structures, the influence line follows the elastic deflected shape of the released system, so stiffness matters.',
+      loadPath: 'The method changes the kinematic constraint associated with the target response, then reads how moving loads perform work on the resulting shape. It is rooted in virtual work and compatibility, not a substitute for the original structure’s equilibrium solution.',
+      equation: 'For a generalized response Q and unit released displacement δ=1, influence ordinate η_Q(a) is proportional to the displacement at load coordinate a in the released system; exact normalization depends on the chosen generalized coordinate and linear formulation. Signs follow positive Q and positive displacement conventions.',
+      analysis: 'Identify the response: remove the corresponding support restraint for a reaction, release the section action for internal shear/moment, impose a unit displacement or rotation, sketch the resulting kinematic shape, then verify key ordinates using equilibrium or a numerical influence-line analysis.',
+      resultInterpretation: 'The shape indicates sign and critical load regions; it does not automatically supply ordinate scale for every indeterminate system. Establish normalization before calculating moving-load effects.',
+      practice: 'For moment at an interior section of a simply supported beam, introduce a hinge-like rotation release at that section and impose a positive relative rotation. The resulting piecewise-linear shape is zero at the supports and peaks at the section. Equilibrium gives the peak ordinate x(L−x)/L, confirming the scale.',
+      designThinking: 'The principle gives rapid insight into where moving loads should be placed and why influence-line signs change. It is especially valuable as a qualitative model check before detailed load positioning.',
+      construction: 'Temporary supports and construction restraints change the released shape. Sketch the influence line for the actual stage configuration, not automatically for the final structure.',
+      failureReasoning: 'Releasing the wrong degree of freedom or treating a qualitative shape as a scaled quantitative line can produce incorrect moving-load effects.',
+      failureModes: ['Wrong response restraint is released.','Qualitative shape is used quantitatively without normalization.'],
+      commonMistakes: ['Releasing a vertical translation when bending moment is requested.','Ignoring stiffness dependence in an indeterminate structure.'],
+      troubleshooting: ['Compare the sketched signs and zero points with a simple equilibrium-derived ordinate or software unit-load result.'],
+      practicalQuestion: 'Which restraint corresponds to the response quantity, and how will you establish the influence-line scale?',
+      related: ['influence-lines','compatibility','principle-of-virtual-work']
+    }
+  },
 ]; // end of knowledge array
 
 // ============================================================================
